@@ -11,3 +11,4 @@ dist-ssr
 .claude
 skills-lock.json
 .ref
+.firebase
