@@ -1,0 +1,82 @@
+:root {
+  --bg: #f3f6f5;
+  --surface: #ffffff;
+  --surface-2: #e7eeec;
+  --ink: #0d1b1e;
+  --muted: #4d6166;
+  --line: #d2ddda;
+  --accent: #0a7c72;
+  --accent-ink: #ffffff;
+  --accent-soft: #d5ede9;
+  --signal: #d97f15;
+  --danger: #b93a27;
+  --ok: #1f7d52;
+
+  --hero-bg: #081215;
+  --hero-ink: #e8f1ee;
+  --hero-muted: #93a9a7;
+  --hero-line: #1c3034;
+  --hero-accent: #3cc2b2;
+
+  --f-display: 'Archivo', 'Arial Narrow', Arial, sans-serif;
+  --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --r: 10px;
+  --r-sm: 8px;
+
+  /* Emil-informed easing: built-ins are too weak for UI motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0a1214;
+    --surface: #101b1e;
+    --surface-2: #172629;
+    --ink: #e5eeeb;
+    --muted: #93a7a5;
+    --line: #24373b;
+    --accent: #3cc2b2;
+    --accent-ink: #03201c;
+    --accent-soft: #12312f;
+    --signal: #f0a44b;
+    --danger: #ee7a64;
+    --ok: #5bc48f;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0a1214;
+  --surface: #101b1e;
+  --surface-2: #172629;
+  --ink: #e5eeeb;
+  --muted: #93a7a5;
+  --line: #24373b;
+  --accent: #3cc2b2;
+  --accent-ink: #03201c;
+  --accent-soft: #12312f;
+  --signal: #f0a44b;
+  --danger: #ee7a64;
+  --ok: #5bc48f;
+  color-scheme: dark;
+}
+
+/* The 12-fibre colour code (TIA-598) used to tag each service line */
+:root {
+  --f01: #1f6fd1;
+  --f02: #f08a24;
+  --f03: #2e9e4f;
+  --f04: #8a5a2b;
+  --f05: #7d8a93;
+  --f06: #e9edee;
+  --f07: #d63a3a;
+  --f08: #1c1c1c;
+  --f09: #e5c12a;
+  --f10: #7e4bc4;
+  --f11: #e98aa8;
+  --f12: #2ec4c4;
+}

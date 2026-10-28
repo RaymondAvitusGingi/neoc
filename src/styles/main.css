@@ -1,0 +1,21 @@
+@import './tokens.css';
+@import './base.css';
+@import './motion.css';
+
+.skip-link{position:absolute;left:-9999px;top:auto;background:var(--accent);color:var(--accent-ink);padding:10px 16px;border-radius:0 0 8px 0;z-index:100}
+.skip-link:focus{left:0;top:0}
+
+.wa-float{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;width:52px;height:52px;border-radius:50%;background:#1fae5c;color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.25);transition:transform 160ms var(--ease-out)}
+.wa-float:active{transform:scale(0.92)}
+@media (max-width:820px){.wa-float{display:flex}}
+
+.state-page{min-height:60vh;display:flex;align-items:center}
+.state-page .wrap{text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;padding-block:80px}
+.state-page .code{font-family:var(--f-mono);color:var(--muted);letter-spacing:.1em}
+.state-page h1{font-size:clamp(32px,5vw,52px)}
+.state-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+
+.legal h2{font-size:20px;margin:28px 0 10px}
+.legal h2:first-child{margin-top:0}
+.legal p+p,.legal ul{margin-top:10px}
+.legal ul{padding-left:20px;color:var(--muted)}
