@@ -9,6 +9,8 @@
   --accent-ink: #ffffff;
   --accent-soft: #d5ede9;
   --signal: #d97f15;
+  --signal-soft: #faead4;
+  --band: #f6efe4;
   --danger: #b93a27;
   --ok: #1f7d52;
 
@@ -24,6 +26,7 @@
 
   --r: 10px;
   --r-sm: 8px;
+  --r-pill: 999px;
 
   /* Emil-informed easing: built-ins are too weak for UI motion */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -43,6 +46,8 @@
     --accent-ink: #03201c;
     --accent-soft: #12312f;
     --signal: #f0a44b;
+    --signal-soft: #2c2217;
+    --band: #19140f;
     --danger: #ee7a64;
     --ok: #5bc48f;
     color-scheme: dark;
@@ -60,6 +65,8 @@
   --accent-ink: #03201c;
   --accent-soft: #12312f;
   --signal: #f0a44b;
+  --signal-soft: #2c2217;
+  --band: #19140f;
   --danger: #ee7a64;
   --ok: #5bc48f;
   color-scheme: dark;

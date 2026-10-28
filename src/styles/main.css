@@ -1,6 +1,7 @@
 @import './tokens.css';
 @import './base.css';
 @import './motion.css';
+@import './revamp.css';
 
 .skip-link{position:absolute;left:-9999px;top:auto;background:var(--accent);color:var(--accent-ink);padding:10px 16px;border-radius:0 0 8px 0;z-index:100}
 .skip-link:focus{left:0;top:0}
