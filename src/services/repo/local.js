@@ -1,14 +1,14 @@
 // Local, browser-only data layer (IndexedDB via idb-keyval + sessionStorage for the
-// signed-in user). It implements the same shape that src/services/repo/firebase.js
-// will implement later — components and Pinia stores only ever talk to
-// src/services/repo/index.js, so swapping the backend never touches UI code.
+// signed-in user). It implements the same shape as src/services/repo/firebase.js —
+// components and Pinia stores only ever talk to src/services/repo/index.js, so
+// swapping the backend never touches UI code.
 import { createStore, get, set } from 'idb-keyval'
 import { cloneDefaults, mergeWithDefaults, DEMO_LOGIN, ROLES } from '../defaults'
 import { hashPassword, newSalt, newId } from '../hash'
+import { checkRateLimit } from '../rateLimit'
 
 const store = createStore('neoc-db', 'kv')
 const SESSION_KEY = 'neoc_session'
-const RATE_KEY = 'neoc_contact_rl'
 
 const k = {
   content: 'content',
@@ -160,6 +160,7 @@ export async function setUserPassword(id, password) {
   user.salt = newSalt()
   user.passHash = await hashPassword(password, user.salt)
   await set(k.users, users, store)
+  return { method: 'set' }
 }
 
 export async function updateUserRole(id, role) {
@@ -263,24 +264,6 @@ export async function deleteTestimonial(id) {
 export async function listMessages() {
   const list = (await get(k.messages, store)) || []
   return list.slice().sort((a, b) => (b.at || 0) - (a.at || 0))
-}
-
-function checkRateLimit() {
-  let hits = []
-  try {
-    hits = JSON.parse(localStorage.getItem(RATE_KEY) || '[]')
-  } catch {
-    hits = []
-  }
-  const hourAgo = Date.now() - 60 * 60 * 1000
-  hits = hits.filter((t) => t > hourAgo)
-  if (hits.length >= 5) throw new Error('Too many messages sent recently. Please try again later.')
-  hits.push(Date.now())
-  try {
-    localStorage.setItem(RATE_KEY, JSON.stringify(hits))
-  } catch {
-    /* ignore */
-  }
 }
 
 export async function createMessage(data) {

@@ -19,8 +19,9 @@ export const useUsersStore = defineStore('users', {
       await this.load()
     },
     async setPassword(id, password) {
-      await repo.setUserPassword(id, password)
+      const result = await repo.setUserPassword(id, password)
       await this.load()
+      return result
     },
     async updateRole(id, role) {
       await repo.updateUserRole(id, role)

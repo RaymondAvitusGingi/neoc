@@ -35,9 +35,9 @@ function startReset(id) {
 }
 async function saveReset(id) {
   if (newPassword.value.length < 8) return toast.error('Password must be at least 8 characters.')
-  await users.setPassword(id, newPassword.value)
+  const result = await users.setPassword(id, newPassword.value)
   resettingId.value = null
-  toast.success('Password updated.')
+  toast.success(result?.method === 'reset-email' ? 'Password reset email sent to that user.' : 'Password updated.')
 }
 
 async function changeRole(u, role) {
