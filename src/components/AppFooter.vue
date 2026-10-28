@@ -2,10 +2,12 @@
 import { computed } from 'vue'
 import { useContentStore } from '@/stores/content'
 import { FIBERS } from '@/services/defaults'
+import { slugify } from '@/services/text'
 
 const content = useContentStore()
 const c = computed(() => content.content.company)
 const year = new Date().getFullYear()
+const services = computed(() => content.content.services.filter((s) => s.isVisible !== false).slice(0, 6))
 </script>
 
 <template>
@@ -15,15 +17,22 @@ const year = new Date().getFullYear()
     </div>
     <div class="wrap foot-in">
       <div>
-        <span class="brand-name">NEOC</span>
-        <p style="margin-top:10px;max-width:40ch">{{ c.tagline }}</p>
+        <router-link to="/" class="brand-name" style="text-decoration:none">NEOC</router-link>
+        <p style="margin-top:10px;max-width:38ch">{{ c.tagline }}</p>
         <p style="margin-top:10px" class="mono">{{ c.address }}<br />{{ c.postal }}</p>
       </div>
       <div>
-        <h4>Pages</h4>
+        <h4>Services</h4>
+        <ul>
+          <li v-for="s in services" :key="s.title">
+            <router-link :to="{ path: '/services', hash: `#${slugify(s.title)}` }">{{ s.title }}</router-link>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
         <ul>
           <li><router-link to="/about">About us</router-link></li>
-          <li><router-link to="/services">Services</router-link></li>
           <li><router-link to="/projects">Our Jobs</router-link></li>
           <li><router-link to="/contact">Contact</router-link></li>
           <li><router-link to="/privacy">Privacy Policy</router-link></li>
