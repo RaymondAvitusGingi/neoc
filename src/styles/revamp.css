@@ -5,7 +5,6 @@
    per spec section 10 rather than the template's blue/Epilogue. */
 
 .nav a.router-link-active { background: transparent; color: var(--accent); font-weight: 700; }
-.nav a.admin-link.router-link-active { background: var(--accent-soft); }
 
 .btn-pill { border-radius: var(--r-pill); }
 .btn-dark { background: var(--ink); color: var(--bg); }

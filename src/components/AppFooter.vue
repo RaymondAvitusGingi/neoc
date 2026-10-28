@@ -36,7 +36,6 @@ const services = computed(() => content.content.services.filter((s) => s.isVisib
           <li><router-link to="/projects">Our Jobs</router-link></li>
           <li><router-link to="/contact">Contact</router-link></li>
           <li><router-link to="/privacy">Privacy Policy</router-link></li>
-          <li><router-link to="/admin">Admin</router-link></li>
         </ul>
       </div>
       <div>
