@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useUsersStore } from '@/stores/users'
 import { ROLES } from '@/services/defaults'
 import { initials, fmtDate } from '@/services/text'
+import { backendName } from '@/services/repo'
 import ConfirmButton from '@/components/ConfirmButton.vue'
 import EmptyState from '@/components/EmptyState.vue'
 
@@ -18,6 +19,9 @@ const newPassword = ref('')
 
 async function createUser() {
   if (!form.name.trim() || !form.username.trim()) return toast.error('Name and username are required.')
+  if (backendName === 'firebase' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.username.trim())) {
+    return toast.error('Enter a valid email address — Firebase sign-in requires one.')
+  }
   if (form.password.length < 8) return toast.error('Password must be at least 8 characters.')
   if (form.password !== form.password2) return toast.error('Passwords do not match.')
   try {
@@ -34,7 +38,9 @@ function startReset(id) {
   newPassword.value = ''
 }
 async function saveReset(id) {
-  if (newPassword.value.length < 8) return toast.error('Password must be at least 8 characters.')
+  if (backendName !== 'firebase' && newPassword.value.length < 8) {
+    return toast.error('Password must be at least 8 characters.')
+  }
   const result = await users.setPassword(id, newPassword.value)
   resettingId.value = null
   toast.success(result?.method === 'reset-email' ? 'Password reset email sent to that user.' : 'Password updated.')
@@ -70,7 +76,18 @@ function isLastSuper(u) {
     <p class="note" style="margin-bottom:14px">The person signs in on the Admin page with this username and password.</p>
     <div class="fields">
       <label class="f">Full name *<input v-model="form.name" maxlength="60" placeholder="e.g. Asha Mwakyusa" /></label>
-      <label class="f">Username or email *<input v-model="form.username" maxlength="60" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e.g. asha or asha@neoctech.co.tz" /></label>
+      <label class="f">
+        {{ backendName === 'firebase' ? 'Email *' : 'Username or email *' }}
+        <input
+          v-model="form.username"
+          :type="backendName === 'firebase' ? 'email' : 'text'"
+          maxlength="60"
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
+          :placeholder="backendName === 'firebase' ? 'asha@neoctech.co.tz' : 'e.g. asha or asha@neoctech.co.tz'"
+        />
+      </label>
       <label class="f full">
         Role *
         <select v-model="form.role">
@@ -113,7 +130,13 @@ function isLastSuper(u) {
         </select>
       </label>
       <div class="act">
-        <button class="btn btn-ghost btn-sm pressable" type="button" @click="startReset(u.id)">Reset password</button>
+        <button
+          class="btn btn-ghost btn-sm pressable"
+          type="button"
+          @click="backendName === 'firebase' ? saveReset(u.id) : startReset(u.id)"
+        >
+          {{ backendName === 'firebase' ? 'Send reset email' : 'Reset password' }}
+        </button>
         <button class="btn btn-ghost btn-sm pressable" type="button" :disabled="u.id === auth.me?.id || isLastSuper(u)" @click="toggleActive(u.id)">
           {{ u.active ? 'Deactivate' : 'Activate' }}
         </button>
