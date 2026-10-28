@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="NEOC Technology Company Limited - IT infrastructure, networking, data centre, power and security solutions in Dar es Salaam, Tanzania.">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>NEOC Technology</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112..125,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky header, a dark "network room" hero band with live fiber pulses, then calm content sections.
+   Each service is a fiber strand, colour-coded with the TIA-598 12-fibre code used on real cables. */
+:root{
+  --bg:#F3F6F5; --surface:#FFFFFF; --surface-2:#E7EEEC; --ink:#0D1B1E; --muted:#4D6166; --line:#D2DDDA;
+  --accent:#0A7C72; --accent-ink:#FFFFFF; --accent-soft:#D5EDE9; --signal:#D97F15;
+  --danger:#B93A27; --ok:#1F7D52;
+  --hero-bg:#081215; --hero-ink:#E8F1EE; --hero-muted:#93A9A7; --hero-line:#1C3034;
+  --f-display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A1214; --surface:#101B1E; --surface-2:#172629; --ink:#E5EEEB; --muted:#93A7A5; --line:#24373B;
+  --accent:#3CC2B2; --accent-ink:#03201C; --accent-soft:#12312F; --signal:#F0A44B;
+  --danger:#EE7A64; --ok:#5BC48F; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0A1214; --surface:#101B1E; --surface-2:#172629; --ink:#E5EEEB; --muted:#93A7A5; --line:#24373B;
+  --accent:#3CC2B2; --accent-ink:#03201C; --accent-soft:#12312F; --signal:#F0A44B;
+  --danger:#EE7A64; --ok:#5BC48F; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--f-display);font-stretch:118%;line-height:1.08;text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--f-mono)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:8px;padding:10px 18px;font-weight:600;font-size:15px;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,transform .1s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--accent)}
+.btn-sm{padding:6px 12px;font-size:13px}
+.btn-danger{background:transparent;border-color:var(--danger);color:var(--danger)}
+.btn:disabled,.u-role select:disabled{opacity:.4;cursor:not-allowed}
+.btn:disabled:active{transform:none}
+
+/* Header */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
+.head-row{display:flex;align-items:center;gap:16px;min-height:66px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto;min-width:0}
+.brand-mark{width:36px;height:36px;flex:none}
+.brand-name{font-family:var(--f-display);font-weight:800;font-stretch:122%;font-size:19px;letter-spacing:.02em;line-height:1}
+.brand-sub{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:3px}
+.nav{display:flex;gap:4px;align-items:center}
+.nav a{padding:8px 12px;border-radius:6px;text-decoration:none;color:var(--muted);font-weight:500;font-size:15px}
+.nav a:hover{color:var(--ink);background:var(--surface-2)}
+.nav a.on{color:var(--ink);background:var(--accent-soft)}
+.nav a.admin-link{font-family:var(--f-mono);font-size:13px;border:1px solid var(--line)}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:6px;padding:7px 10px;cursor:pointer}
+@media (max-width:820px){
+  .menu-btn{display:block}
+  .nav{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;background:var(--surface);border-bottom:1px solid var(--line);padding:8px max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px))}
+  .nav:not(.open){display:none}
+}
+
+/* Hero */
+.hero{background:var(--hero-bg);color:var(--hero-ink);position:relative;overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-inner{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;padding-block:72px 64px;align-items:end}
+.hero .eyebrow{color:#5FD3C4}
+.hero h1{font-size:clamp(34px,5.4vw,64px);font-weight:800;margin:14px 0 18px}
+.hero h1 em{font-style:normal;color:#5FD3C4}
+.hero-sub{color:var(--hero-muted);font-size:18px;max-width:52ch}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero .btn-primary{background:#3CC2B2;color:#03201C}
+.hero .btn-ghost{color:var(--hero-ink);border-color:#335056}
+.hero-card{background:rgba(8,18,21,.72);border:1px solid var(--hero-line);border-radius:var(--r);padding:20px;backdrop-filter:blur(4px)}
+.hero-card h3{font-size:13px;font-family:var(--f-mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--hero-muted);margin-bottom:12px}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px}
+.spec dt{color:var(--hero-muted);font-family:var(--f-mono);font-size:12px;padding-top:2px}
+.spec dd{margin:0;font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere}
+@media (max-width:820px){.hero-inner{grid-template-columns:1fr;padding-block:48px 40px}}
+
+/* Sections */
+section.block{padding-block:72px}
+section.block + section.block{border-top:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:32px;align-items:end;margin-bottom:36px}
+.sec-head h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;margin-top:8px}
+.sec-head p{color:var(--muted);max-width:60ch}
+@media (max-width:820px){.sec-head{grid-template-columns:1fr;gap:12px}}
+
+/* Fiber ports (services) */
+.ports{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.port{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;position:relative;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
+a.port:hover{border-color:var(--accent);transform:translateY(-2px)}
+.port-tag{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.fiber-dot{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.port h3{font-size:20px;font-weight:700}
+.port p{color:var(--muted);font-size:15px}
+.port ul{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.port li{display:grid;grid-template-columns:14px 1fr;gap:8px}
+.port li::before{content:"";width:8px;height:2px;background:var(--accent);margin-top:11px}
+.port .more{margin-top:auto;padding-top:6px;font-family:var(--f-mono);font-size:13px;color:var(--accent)}
+
+/* Values / why */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:28px 32px}
+.item h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.item p{color:var(--muted);font-size:15px}
+.item .k{font-family:var(--f-mono);font-size:12px;color:var(--signal);margin-bottom:8px;display:block}
+
+/* Process */
+.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.step{padding:20px 18px;border-right:1px solid var(--line);min-width:0}
+.step:last-child{border-right:0}
+.step .n{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.step h3{font-size:16px;font-weight:700;margin:8px 0 6px}
+.step p{font-size:14px;color:var(--muted)}
+@media (max-width:980px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}.step{border-bottom:1px solid var(--line)}.step:nth-child(2n){border-right:0}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}.step{border-right:0}}
+
+/* Markets */
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-size:14.5px}
+
+/* About */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.prose p{max-width:64ch}
+.prose p+p{margin-top:14px}
+.statement{border-top:3px solid var(--accent);padding-top:16px}
+.statement h3{font-size:22px;font-weight:800;margin-bottom:8px}
+.statement p{color:var(--muted)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table.info{width:100%;border-collapse:collapse;font-size:15px}
+table.info th,table.info td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+table.info tr:last-child th,table.info tr:last-child td{border-bottom:0}
+table.info th{width:38%;color:var(--muted);font-weight:500;font-family:var(--f-mono);font-size:13px}
+table.info td{font-variant-numeric:tabular-nums}
+
+/* CTA band */
+.cta-band{background:var(--accent-soft);border-radius:var(--r);padding:32px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.cta-band h2{font-size:clamp(24px,3vw,32px);font-weight:800;max-width:24ch}
+
+/* Contact */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:40px}
+@media (max-width:860px){.contact{grid-template-columns:1fr}}
+.c-list{display:flex;flex-direction:column;gap:14px}
+.c-row{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.c-row .lab{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.c-row .val{font-weight:500;user-select:all;overflow-wrap:anywhere}
+.c-row>div{min-width:0}
+form.card,.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fields .full{grid-column:1/-1}
+@media (max-width:560px){.fields{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:var(--muted);min-width:0}
+.f input,.f select,.f textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:15px;color:var(--ink);width:100%}
+.f textarea{resize:vertical;min-height:110px;line-height:1.5}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.note{font-size:13px;color:var(--muted)}
+.form-msg{margin-top:12px;font-size:14px;padding:10px 12px;border-radius:8px}
+.form-msg.ok{background:var(--accent-soft);color:var(--ink)}
+.form-msg.err{border:1px solid var(--danger);color:var(--danger)}
+
+/* Footer */
+.foot{background:var(--hero-bg);color:var(--hero-muted);font-size:14px;margin-top:0}
+.foot-in{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;padding-block:44px 28px}
+.foot h4{font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#5FD3C4;margin:0 0 10px}
+.foot a{color:var(--hero-ink);text-decoration:none}
+.foot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.foot .brand-name{color:var(--hero-ink)}
+.foot-bot{border-top:1px solid var(--hero-line);padding-block:16px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:12px}
+.fiber-strip{display:flex;height:4px}
+.fiber-strip span{flex:1}
+@media (max-width:760px){.foot-in{grid-template-columns:1fr}}
+
+/* Admin */
+.admin{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:calc(100vh - 66px)}
+.side{background:var(--surface);border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:2px}
+.side .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:6px 12px}
+.side button{all:unset;cursor:pointer;padding:9px 12px;border-radius:7px;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+.side button:hover{background:var(--surface-2);color:var(--ink)}
+.side button.on{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.side button:focus-visible{outline:2px solid var(--signal)}
+.badge{background:var(--signal);color:#1b1004;border-radius:999px;font-size:11px;font-weight:700;padding:1px 7px;font-family:var(--f-mono)}
+.main{padding:28px max(16px,env(safe-area-inset-right,0px)) 80px 32px;min-width:0}
+.main-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:22px}
+.main-head h2{font-size:28px;font-weight:800}
+.mode{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:12px 14px;font-size:14px;margin-bottom:20px}
+.mode .dot{width:9px;height:9px;border-radius:50%;margin-top:7px;flex:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.stat .v{font-family:var(--f-display);font-stretch:118%;font-weight:800;font-size:30px;font-variant-numeric:tabular-nums}
+.stat .l{font-size:13px;color:var(--muted)}
+.ed-list{display:flex;flex-direction:column;gap:14px}
+.ed-row{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px}
+.ed-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ed-top .idx{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-right:auto}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:6px;width:32px;height:32px;cursor:pointer;display:inline-grid;place-items:center;font-size:14px}
+.icon-btn:hover{border-color:var(--accent)}
+.icon-btn:disabled{opacity:.35;cursor:default}
+.savebar{position:sticky;bottom:0;margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;box-shadow:0 -6px 20px rgba(0,0,0,.06);padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.savebar .st{margin-right:auto;font-size:14px;color:var(--muted)}
+.savebar .st.dirty{color:var(--signal);font-weight:600}
+.msg{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px}
+.msg.unread{border-left:4px solid var(--signal)}
+.msg-h{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline}
+.msg-h strong{font-size:16px}
+.msg-meta{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.msg-body{white-space:pre-wrap;overflow-wrap:anywhere}
+.msg-act{display:flex;gap:8px;flex-wrap:wrap}
+.login{max-width:420px;margin:60px auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.login h2{font-size:28px;font-weight:800;margin:8px 0 6px}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:28px;text-align:center;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;z-index:90;max-width:calc(100% - 32px)}
+@media (max-width:820px){
+  .admin{grid-template-columns:1fr}
+  .side{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+  .side .lbl{display:none}
+  .side button{white-space:nowrap;gap:6px}
+  .main{padding:20px max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px))}
+}
+/* Projects */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.filters button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-size:14px;cursor:pointer;color:var(--muted)}
+.filters button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.proj{all:unset;cursor:pointer;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:border-color .15s,transform .15s}
+.proj:hover{border-color:var(--accent);transform:translateY(-2px)}
+.proj:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.proj-img{aspect-ratio:4/3;max-width:100%;background:var(--surface-2);position:relative;overflow:hidden}
+.proj-img img{width:100%;height:100%;object-fit:cover;display:block}
+.proj-img .count{position:absolute;right:10px;bottom:10px;background:rgba(8,18,21,.78);color:#E8F1EE;font-family:var(--f-mono);font-size:12px;padding:3px 8px;border-radius:6px}
+.proj-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.proj-body h3{font-size:19px;font-weight:700}
+.proj-meta{font-family:var(--f-mono);font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px}
+.ph{display:grid;place-items:center;height:100%;color:var(--muted);font-family:var(--f-mono);font-size:12px}
+.lb{position:fixed;inset:0;z-index:80;background:rgba(4,10,12,.86);display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb-box{background:var(--surface);border-radius:var(--r);max-width:980px;width:100%;max-height:100%;overflow:auto;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.lb-stage{background:#081215;position:relative;display:flex;align-items:center;justify-content:center;min-height:280px}
+.lb-stage img{max-width:100%;max-height:72vh;display:block}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,18,21,.7);color:#fff;border:0;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px}
+.lb-prev{left:10px}.lb-next{right:10px}
+.lb-info{padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.lb-info h3{font-size:24px;font-weight:800}
+.lb-thumbs{display:flex;gap:6px;flex-wrap:wrap}
+.lb-thumbs button{all:unset;cursor:pointer;width:56px;height:42px;border-radius:5px;overflow:hidden;border:2px solid transparent}
+.lb-thumbs button.on{border-color:var(--accent)}
+.lb-thumbs img{width:100%;height:100%;object-fit:cover}
+.lb-close{align-self:flex-end}
+@media (max-width:760px){.lb-box{grid-template-columns:1fr}}
+.drop{border:2px dashed var(--line);border-radius:var(--r);padding:20px;text-align:center;color:var(--muted);cursor:pointer;display:block}
+.drop:hover,.drop.over{border-color:var(--accent);color:var(--ink)}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.thumb{position:relative;width:96px;height:72px;border-radius:6px;overflow:hidden;background:var(--surface-2)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(8,18,21,.8);color:#fff;cursor:pointer;font-size:12px;line-height:1}
+.adm-proj{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.adm-proj .pi{width:120px;height:90px;border-radius:6px;overflow:hidden;background:var(--surface-2)}
+.adm-proj .pi img{width:100%;height:100%;object-fit:cover}
+.adm-proj .act{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:560px){.adm-proj{grid-template-columns:80px minmax(0,1fr)}.adm-proj .pi{width:80px;height:60px}.adm-proj .act{grid-column:1/-1;justify-content:flex-start}}
+.u-row{display:grid;grid-template-columns:40px minmax(0,1fr) 150px auto;gap:12px 14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.u-row.off{opacity:.62}
+.u-row .act{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.u-main{min-width:0}
+.u-role select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:14px}
+.u-inline{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.u-inline input{flex:1 1 220px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;color:var(--ink)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--accent-soft);color:var(--ink);display:grid;place-items:center;font-family:var(--f-mono);font-weight:500;font-size:14px;flex:none}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;font-weight:500;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--ink);vertical-align:2px}
+.me-card{display:flex;gap:10px;align-items:center;padding:8px 12px;font-size:14px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:860px){.u-row{grid-template-columns:40px minmax(0,1fr)}.u-role,.u-row .act{grid-column:1/-1}.u-row .act{justify-content:flex-start}}
+@media (max-width:820px){.me-card{display:none}}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.testi{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px;position:relative}
+.testi blockquote{margin:0;font-size:16.5px;line-height:1.6;color:var(--ink);quotes:"\201C" "\201D";min-width:0;overflow-wrap:anywhere}
+.testi blockquote::before{content:open-quote;font-family:var(--f-display);font-size:44px;line-height:0;vertical-align:-18px;margin-right:4px;color:var(--accent)}
+.testi blockquote::after{content:close-quote}
+.testi figcaption{display:flex;gap:12px;align-items:center;margin-top:auto;font-size:14.5px}
+.lb-info .testi{padding:16px;background:var(--bg)}
+.lb-info .testi blockquote{font-size:15px}
+.stars{color:var(--signal);letter-spacing:2px;font-size:15px}
+.stars-off{color:var(--line)}
+.testi-job{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:12.5px;color:var(--accent)}
+.testi-job:hover{text-decoration:underline}
+.testi-job:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.t-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.t-row.off{opacity:.62}
+.t-row .act{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.t-q{font-size:15px;margin-bottom:6px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+label.chk{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink);cursor:pointer}
+label.chk input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);flex:none}
+@media (max-width:640px){.t-row{grid-template-columns:1fr}.t-row .act{justify-content:flex-start}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="#home" aria-label="NEOC Technology home">
+      <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true">
+        <rect x="1" y="1" width="34" height="34" rx="8" fill="var(--accent)"/>
+        <path d="M9 26V10l18 16V10" fill="none" stroke="var(--accent-ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="27" cy="10" r="2.6" fill="var(--signal)"/>
+      </svg>
+      <span><span class="brand-name">NEOC</span><span class="brand-sub">Technology Co. Ltd</span></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav">
+      <a href="#home" data-r="home">Home</a>
+      <a href="#about" data-r="about">About</a>
+      <a href="#services" data-r="services">Services</a>
+      <a href="#jobs" data-r="jobs">Our Jobs</a>
+      <a href="#contact" data-r="contact">Contact</a>
+      <a href="#admin" data-r="admin" class="admin-link">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main id="view"></main>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+/* ---------- Fibre colour code (TIA-598) ---------- */
+const FIBERS=[["Blue","#1F6FD1"],["Orange","#F08A24"],["Green","#2E9E4F"],["Brown","#8A5A2B"],["Slate","#7D8A93"],["White","#E9EDEE"],["Red","#D63A3A"],["Black","#1C1C1C"],["Yellow","#E5C12A"],["Violet","#7E4BC4"],["Rose","#E98AA8"],["Aqua","#2EC4C4"]];
+
+/* ---------- Default content (from the company profile) ---------- */
+const DEFAULTS={
+  company:{name:"NEOC TECHNOLOGY COMPANY LIMITED",tagline:"Connecting Technology. Empowering Business.",address:"Kijitonyama Mabatini Road, Dar es Salaam, Tanzania",postal:"P.O. Box 31317",email:"neocgr9@gmail.com",phone1:"+255 629 101 982",phone2:"+255 763 989 246",reg:"203431848",tin:"203431848",country:"Tanzania",md:"JONIPHACE MUYAMA PHILMON",established:"May 2026"},
+  hero:{eyebrow:"IT · Networks · Data Centres · Power · Security",headline:"Dependable technology infrastructure for Tanzania and East Africa.",sub:"We design, supply, install and maintain the servers, networks, fibre, power and security systems that keep organisations running."},
+  about:"NEOC TECHNOLOGY COMPANY LIMITED is a technology-focused company established to provide reliable, innovative, and cost-effective services to businesses, government institutions, telecom operators, and individual clients.\n\nWe support digital transformation by delivering technology products, infrastructure solutions, professional technical services, and ongoing IT support. We help organisations improve operational efficiency, strengthen information security, enhance connectivity, and build dependable technology environments.\n\nThrough a customer-focused approach, technical expertise, and commitment to quality, we aim to become a trusted technology partner for organisations across Tanzania and the wider East African region.",
+  vision:"To become a leading and trusted technology solutions provider in Tanzania and East Africa, recognised for innovation, reliability, service excellence, and sustainable digital transformation.",
+  mission:"To deliver dependable, secure, and innovative technology solutions that enable our clients to achieve their business objectives, improve productivity, reduce operational risks, and adapt to the changing digital environment.",
+  values:[
+    {t:"Integrity",d:"Conducting business honestly, transparently, and professionally."},
+    {t:"Innovation",d:"Embracing modern technologies to solve business challenges."},
+    {t:"Customer Focus",d:"Understanding client needs and delivering practical solutions."},
+    {t:"Quality",d:"Maintaining high standards in products, installation, and technical services."},
+    {t:"Reliability",d:"Providing dependable solutions and responsive technical support."},
+    {t:"Security",d:"Promoting information security and responsible technology management."},
+    {t:"Continuous Improvement",d:"Developing our skills, services, and operational processes."}],
+  services:[
+    {title:"IT Infrastructure",fiber:0,summary:"Servers, computers and the infrastructure work that keeps them running.",items:["Enterprise servers and server accessories","Desktop computers, laptops, and workstations","Enterprise hardware installation and configuration","IT infrastructure upgrades and maintenance","Data centre infrastructure solutions"]},
+    {title:"Networking & Telecommunications",fiber:1,summary:"Reliable communication infrastructure, from design to day-to-day maintenance.",items:["Enterprise network design and implementation","Routers, switches, firewalls, and network accessories","Fibre-optic cabling and structured cabling","Fibre-optic transceivers and connectivity components","LAN, WAN, and wireless networking solutions","Network troubleshooting, optimisation, and maintenance","Telecommunications infrastructure support"]},
+    {title:"Data Centre & Enterprise Solutions",fiber:2,summary:"Secure, efficient and scalable IT operations for enterprise environments.",items:["Data centre equipment supply and installation","Server and storage deployment","Enterprise switching and routing","Fibre Channel and storage-area networking (SAN)","Infrastructure troubleshooting","Equipment migration","Preventive maintenance and technical support"]},
+    {title:"IT Consultancy & Technical Support",fiber:3,summary:"Informed technology decisions and reliable day-to-day IT operations.",items:["IT infrastructure assessment and planning","Technology selection and procurement support","System installation and configuration","Network performance troubleshooting","IT maintenance and operational support","Technical documentation and knowledge transfer"]},
+    {title:"Electrical Equipment & Generators",fiber:4,summary:"Installation, testing and commissioning of electrical equipment and standby generators for uninterrupted power.",items:["Site preparation and electrical distribution equipment","Generator positioning, mounting and power cabling","Earthing, grounding and connection to the main system","Automatic transfer switch (ATS) integration","Safety checks, functional and load testing"]},
+    {title:"CCTV & Electric Fence",fiber:6,summary:"Surveillance and perimeter security to prevent unauthorised access and protect property.",items:["CCTV installation, configuration and commissioning","Fence insulators, brackets and wire tensioning","Energiser installation and power connection","Earthing, grounding and warning signs","Integration with the wider security system"]},
+    {title:"Hardware Supply & Procurement",fiber:8,summary:"Sourcing suitable technology products to agreed specifications and warranty terms.",items:["Servers, storage, and computing equipment","Network switches, routers, and firewalls","Fibre-optic and structured cabling materials","Data centre accessories and related components","IT peripherals and office technology equipment","Replacement parts and compatible accessories"]}],
+  markets:["Telecommunications companies","Government & public sector","Banks & financial services","Corporate & private enterprises","Internet service providers","Educational institutions","Healthcare organisations","Data centres & tech providers","Small & medium enterprises"],
+  why:[
+    {t:"Customer-oriented solutions",d:"We start from each client's requirements and recommend technology that fits them."},
+    {t:"Technical capability",d:"Professional installation, configuration, troubleshooting, and maintenance."},
+    {t:"Reliable products",d:"Equipment sourced to meet agreed technical requirements and quality expectations."},
+    {t:"Cost-effective delivery",d:"Practical solutions that balance performance, reliability, and budget."},
+    {t:"Security and reliability",d:"Protecting information systems and maintaining business continuity."},
+    {t:"Long-term partnerships",d:"Relationships built on trust, accountability, communication, and dependable support."}],
+  approach:[
+    {t:"Requirements Assessment",d:"Understand the client's operational needs and technical environment."},
+    {t:"Solution Design",d:"Develop an appropriate technical solution and implementation plan."},
+    {t:"Procurement & Preparation",d:"Identify suitable products and prepare the required resources."},
+    {t:"Implementation",d:"Install, configure, and integrate the agreed solution."},
+    {t:"Testing & Handover",d:"Verify functionality and provide technical documentation."},
+    {t:"Maintenance & Support",d:"Provide agreed follow-up support and maintenance services."}],
+  quality:"We follow appropriate technical standards, manufacturer recommendations, safe installation practices, and agreed contractual requirements. We protect client information, maintain confidentiality, and implement technology solutions responsibly.",
+  updatedAt:null
+};
+
+/* ---------- State ---------- */
+const clone=o=>JSON.parse(JSON.stringify(o));
+function mergeDefaults(d){const out=clone(DEFAULTS);if(!d||typeof d!=="object")return out;for(const k of Object.keys(out)){if(d[k]===undefined)continue;if(out[k]&&typeof out[k]==="object"&&!Array.isArray(out[k])&&typeof d[k]==="object")out[k]={...out[k],...d[k]};else out[k]=d[k];}return out;}
+const S={content:clone(DEFAULTS),mode:"connecting",db:null,user:null,uid:null,canEdit:false,assets:null,messages:[],projects:[],pfilter:"All",lb:null,upl:[],busy:false,tab:"dashboard",draft:null,dirty:false,authed:false,confirm:null,route:"home"};
+const imgSrc=x=>x&&(x.src||(x.id?"/_blob/"+x.id:""));
+const fmtMonth=s=>{if(!s)return"";const [y,m]=String(s).split("-");const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return m?`${M.at(+m-1)} ${y}`:y};
+const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+/* ---------- Admin accounts ---------- */
+const ROLES={superadmin:{label:"Super Admin",desc:"Everything, including creating and removing users."},
+  editor:{label:"Editor",desc:"Edits all website content, posts and deletes jobs, handles messages."},
+  viewer:{label:"Viewer",desc:"Can look at the dashboard, jobs and messages, but cannot change anything."}};
+const DEMO={user:"admin",pass:"neoc2026"};
+S.users=[];S.me=null;S.fails={};S.testis=[];S.tEdit=null;
+try{const m=JSON.parse(sessionStorage.getItem("neoc_me")||"null");if(m&&m.id&&ROLES[m.role]){S.me=m;S.authed=true}}catch(e){}
+const role=()=>S.me?S.me.role:"viewer";
+const isSuper=()=>role()==="superadmin";
+const canWrite=()=>canSave()&&(role()==="superadmin"||role()==="editor");
+const hasSuper=()=>S.users.some(u=>u.active&&u.role==="superadmin");
+const initials=n=>String(n||"?").trim().split(/\s+/).slice(0,2).map(w=>w[0]||"").join("").toUpperCase()||"?";
+function setMe(m){S.me=m;S.authed=!!m;try{m?sessionStorage.setItem("neoc_me",JSON.stringify(m)):sessionStorage.removeItem("neoc_me")}catch(e){}}
+async function hashPw(pw,salt){const data=new TextEncoder().encode(salt+":"+pw);
+  try{if(crypto&&crypto.subtle){const b=await crypto.subtle.digest("SHA-256",data);return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}}catch(e){}
+  let h=0x811c9dc5;for(const c of data){h^=c;h=Math.imul(h,0x01000193)>>>0}return "f"+h.toString(16);}
+const newSalt=()=>{try{return [...crypto.getRandomValues(new Uint8Array(12))].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return Math.random().toString(36).slice(2)}};
+
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const paras=s=>String(s||"").split(/\n\s*\n/).map(p=>`<p>${esc(p)}</p>`).join("");
+const fiber=i=>FIBERS[((+i||0)%12+12)%12];
+const fmtDate=t=>t?new Date(t).toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}):"—";
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>el.hidden=true,2600)}
+
+/* ---------- Public pages ---------- */
+function portCard(s,i,link){const [fn,fc]=fiber(s.fiber);const tag=`<span class="port-tag"><span class="fiber-dot" style="background:${fc}"></span>F${String(i+1).padStart(2,"0")} · ${fn}</span>`;
+  if(link)return `<a class="port" href="#services">${tag}<h3>${esc(s.title)}</h3><p>${esc(s.summary)}</p><span class="more">${s.items.length} capabilities →</span></a>`;
+  return `<article class="port" id="svc-${i}">${tag}<h3>${esc(s.title)}</h3><p>${esc(s.summary)}</p><ul>${s.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></article>`;}
+
+function footer(){const c=S.content.company;return `<footer class="foot"><div class="fiber-strip">${FIBERS.map(f=>`<span style="background:${f[1]}"></span>`).join("")}</div>
+<div class="wrap foot-in"><div><span class="brand-name">NEOC</span><p style="margin-top:10px;max-width:40ch">${esc(c.tagline)}</p><p style="margin-top:10px" class="mono">${esc(c.address)}<br>${esc(c.postal)}</p></div>
+<div><h4>Pages</h4><ul><li><a href="#about">About us</a></li><li><a href="#services">Services</a></li><li><a href="#jobs">Our Jobs</a></li><li><a href="#contact">Contact</a></li><li><a href="#admin">Admin</a></li></ul></div>
+<div><h4>Contact</h4><ul><li>${esc(c.phone1)}</li><li>${esc(c.phone2)}</li><li>${esc(c.email)}</li></ul></div></div>
+<div class="wrap foot-bot"><span>© ${new Date().getFullYear()} ${esc(c.name)}</span><span>Reg. No ${esc(c.reg)} · TIN ${esc(c.tin)}</span></div></footer>`;}
+
+function pageHome(){const C=S.content,c=C.company;
+  const h=esc(C.hero.headline).replace(/(Tanzania(?: and East Africa)?)/,"<em>$1</em>");
+  return `<section class="hero"><canvas id="fibers" aria-hidden="true"></canvas><div class="wrap hero-inner">
+  <div><span class="eyebrow">${esc(C.hero.eyebrow)}</span><h1>${h}</h1><p class="hero-sub">${esc(C.hero.sub)}</p>
+  <div class="hero-cta"><a class="btn btn-primary" href="#contact">Request a quote</a><a class="btn btn-ghost" href="#services">Explore services</a></div></div>
+  <div class="hero-card"><h3>Company record</h3><dl class="spec"><dt>Name</dt><dd>${esc(c.name)}</dd><dt>Based in</dt><dd>${esc(c.address)}</dd><dt>Reg. No</dt><dd>${esc(c.reg)}</dd><dt>TIN</dt><dd>${esc(c.tin)}</dd><dt>Established</dt><dd>${esc(c.established)}</dd><dt>Phone</dt><dd>${esc(c.phone1)}</dd></dl></div>
+  </div></section>
+  <section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">What we do</span><h2>${C.services.length} service lines, one partner.</h2></div><p>Each line below is tagged with a fibre colour from the standard 12-fibre code, the same way our technicians label strands in a cable.</p></div>
+  <div class="ports">${C.services.map((s,i)=>portCard(s,i,true)).join("")}</div></div></section>
+  <section class="block" id="our-jobs"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Our Jobs</span><h2>Jobs we have completed.</h2></div><p>Recent installations by the NEOC team, posted straight from our admin dashboard. ${S.projects.length?`<a href="#jobs">See all ${S.projects.length} job${S.projects.length===1?"":"s"} →</a>`:""}</p></div>
+  ${S.projects.length?`<div class="proj-grid">${S.projects.slice(0,6).map(projCard).join("")}</div>`:`<div class="empty">Our latest jobs will appear here soon.</div>`}</div></section>
+  ${shownTestis().length?`<section class="block" id="testimonials"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Testimonials</span><h2>What our clients say.</h2></div><p>Feedback from organisations we have worked with, shared with their permission.</p></div>
+  <div class="testi-grid">${shownTestis().slice(0,6).map(t=>testiCard(t,true)).join("")}</div></div></section>`:""}
+  <section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">How we deliver</span><h2>A structured path from survey to support.</h2></div><p>Every project follows the same six stages, so you always know what has been done and what comes next.</p></div>
+  <div class="steps">${C.approach.map((a,i)=>`<div class="step"><span class="n">STAGE ${i+1}</span><h3>${esc(a.t)}</h3><p>${esc(a.d)}</p></div>`).join("")}</div></div></section>
+  <section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Why NEOC</span><h2>Built for long-term partnerships.</h2></div><p>${esc(C.quality)}</p></div>
+  <div class="grid-3">${C.why.map(w=>`<div class="item"><h3>${esc(w.t)}</h3><p>${esc(w.d)}</p></div>`).join("")}</div></div></section>
+  <section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Who we serve</span><h2>Sectors we work with.</h2></div><p>From telecom operators and banks to schools, clinics and SMEs.</p></div>
+  <div class="chips">${C.markets.map(m=>`<span class="chip">${esc(m)}</span>`).join("")}</div>
+  <div class="cta-band" style="margin-top:48px"><h2>Planning a network, power or security project?</h2><a class="btn btn-primary" href="#contact">Talk to our team</a></div></div></section>${footer()}`;}
+
+function pageAbout(){const C=S.content,c=C.company;
+  const rows=[["Company name",c.name],["Country of registration",c.country],["Registration number",c.reg],["TIN",c.tin],["Physical address",c.address],["Postal address",c.postal],["Telephone",c.phone1+" & "+c.phone2],["Email",c.email],["Managing Director",c.md],["Year established",c.established]];
+  return `<section class="block"><div class="wrap"><span class="eyebrow">About us</span><h2 style="font-size:clamp(32px,4.5vw,52px);font-weight:800;margin:10px 0 28px;max-width:20ch">${esc(c.tagline)}</h2>
+  <div class="two"><div class="prose">${paras(C.about)}</div><div style="display:flex;flex-direction:column;gap:28px"><div class="statement"><span class="eyebrow">Vision</span><h3 style="margin-top:6px">Where we are going</h3><p>${esc(C.vision)}</p></div><div class="statement"><span class="eyebrow">Mission</span><h3 style="margin-top:6px">What we do every day</h3><p>${esc(C.mission)}</p></div></div></div></div></section>
+  <section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Core values</span><h2>What guides our work.</h2></div><p>The standards our team holds itself to on every site and every ticket.</p></div>
+  <div class="grid-3">${C.values.map((v,i)=>`<div class="item"><span class="k">V${String(i+1).padStart(2,"0")}</span><h3>${esc(v.t)}</h3><p>${esc(v.d)}</p></div>`).join("")}</div></div></section>
+  <section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Corporate information</span><h2>Company particulars.</h2></div><p>Registered in ${esc(c.country)}. Certifications and formal approvals will be listed here as the company obtains them.</p></div>
+  <div class="table-wrap"><table class="info"><tbody>${rows.map(r=>`<tr><th>${esc(r[0])}</th><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></div></div></section>${footer()}`;}
+
+function pageServices(){const C=S.content;
+  return `<section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Products & services</span><h2>Everything from the server rack to the perimeter fence.</h2></div><p>All equipment supplied is subject to product specifications, availability, warranty conditions, and agreed procurement terms.</p></div>
+  <div class="ports">${C.services.map((s,i)=>portCard(s,i,false)).join("")}</div>
+  <div class="cta-band" style="margin-top:48px"><h2>Need a site survey or a quotation?</h2><a class="btn btn-primary" href="#contact">Send a request</a></div></div></section>${footer()}`;}
+
+function svcFiber(name){const i=S.content.services.findIndex(s=>s.title===name);return i<0?null:fiber(S.content.services[i].fiber)}
+function projCard(p){const f=svcFiber(p.service);const cover=p.images&&p.images[0];
+  return `<button class="proj" data-proj="${esc(p.id)}" type="button"><div class="proj-img">${cover?`<img src="${esc(imgSrc(cover))}" alt="${esc(p.title)}" loading="lazy">`:`<div class="ph">No photo</div>`}${p.images&&p.images.length>1?`<span class="count">${p.images.length} photos</span>`:""}</div>
+  <div class="proj-body">${p.service?`<span class="port-tag">${f?`<span class="fiber-dot" style="background:${f[1]}"></span>`:""}${esc(p.service)}</span>`:""}<h3>${esc(p.title)}</h3><div class="proj-meta">${p.client?`<span>${esc(p.client)}</span>`:""}${p.location?`<span>${esc(p.location)}</span>`:""}${p.date?`<span>${esc(fmtMonth(p.date))}</span>`:""}</div></div></button>`;}
+
+function pageProjects(){const P=S.projects;const cats=["All",...new Set(P.map(p=>p.service).filter(Boolean))];
+  if(!cats.includes(S.pfilter))S.pfilter="All";
+  const list=S.pfilter==="All"?P:P.filter(p=>p.service===S.pfilter);
+  return `<section class="block"><div class="wrap"><div class="sec-head"><div><span class="eyebrow">Our Jobs</span><h2>Jobs we have completed.</h2></div><p>Network, data centre, power and security installations delivered by the NEOC team. Select a job to see its photos and details.</p></div>
+  ${P.length?`<div class="filters" role="group" aria-label="Filter jobs by service">${cats.map(c=>`<button type="button" data-pf="${esc(c)}" class="${S.pfilter===c?"on":""}">${esc(c)}${c==="All"?` (${P.length})`:""}</button>`).join("")}</div>
+  <div class="proj-grid">${list.map(projCard).join("")}</div>`
+  :`<div class="empty">No jobs have been posted yet. Jobs posted from the admin dashboard appear here straight away.</div>`}
+  <div class="cta-band" style="margin-top:48px"><h2>Want results like these for your site?</h2><a class="btn btn-primary" href="#contact">Request a quote</a></div></div></section>${footer()}`;}
+
+function lightbox(){const p=S.projects.find(x=>x.id===S.lb?.id);if(!p)return"";const imgs=p.images||[];const i=Math.min(S.lb.i,Math.max(imgs.length-1,0));const cur=imgs[i];
+  return `<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="${esc(p.title)}"><div class="lb-box">
+  <div class="lb-stage">${cur?`<img src="${esc(imgSrc(cur))}" alt="${esc(p.title)} photo ${i+1}">`:`<div class="ph">No photo</div>`}
+  ${imgs.length>1?`<button class="lb-nav lb-prev" data-lbi="${(i-1+imgs.length)%imgs.length}" aria-label="Previous photo">‹</button><button class="lb-nav lb-next" data-lbi="${(i+1)%imgs.length}" aria-label="Next photo">›</button>`:""}</div>
+  <div class="lb-info"><button class="btn btn-ghost btn-sm lb-close" data-act="lb-close" type="button">Close ✕</button>
+  ${p.service?`<span class="eyebrow">${esc(p.service)}</span>`:""}<h3>${esc(p.title)}</h3>
+  <dl class="spec" style="color:var(--ink)">${p.client?`<dt style="color:var(--muted)">Client</dt><dd>${esc(p.client)}</dd>`:""}${p.location?`<dt style="color:var(--muted)">Location</dt><dd>${esc(p.location)}</dd>`:""}${p.date?`<dt style="color:var(--muted)">Completed</dt><dd>${esc(fmtMonth(p.date))}</dd>`:""}</dl>
+  ${p.description?`<div class="prose" style="color:var(--muted);font-size:15px">${paras(p.description)}</div>`:""}
+  ${shownTestis().filter(t=>t.jobId===p.id).map(t=>testiCard(t,false)).join("")}
+  ${imgs.length>1?`<div class="lb-thumbs">${imgs.map((x,k)=>`<button data-lbi="${k}" class="${k===i?"on":""}" aria-label="Photo ${k+1}"><img src="${esc(imgSrc(x))}" alt=""></button>`).join("")}</div><span class="note mono">Photo ${i+1} of ${imgs.length}</span>`:""}
+  </div></div></div>`;}
+function renderLB(){const old=document.getElementById("lb");if(old)old.remove();if(!S.lb)return;document.body.insertAdjacentHTML("beforeend",lightbox());const c=document.querySelector("#lb .lb-close");if(c)c.focus({preventScroll:true})}
+
+function shownTestis(){return S.testis.filter(t=>t.visible).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))}
+function stars(n){n=+n||0;if(!n)return"";return `<span class="stars" role="img" aria-label="${n} out of 5 stars">${"★".repeat(n)}<span class="stars-off">${"★".repeat(5-n)}</span></span>`}
+function testiCard(t,withJob){const job=t.jobId&&S.projects.find(p=>p.id===t.jobId);const who=[t.role,t.company].filter(Boolean).join(", ");
+  return `<figure class="testi">${stars(t.rating)}<blockquote>${esc(t.quote)}</blockquote>
+  <figcaption><span class="avatar" aria-hidden="true">${esc(initials(t.name))}</span><span style="min-width:0"><strong>${esc(t.name)}</strong>${who?`<span class="note" style="display:block">${esc(who)}</span>`:""}</span></figcaption>
+  ${withJob&&job?`<button class="testi-job" type="button" data-proj="${esc(job.id)}">Job: ${esc(job.title)} →</button>`:""}</figure>`}
+
+function pageContact(){const C=S.content,c=C.company;
+  const row=(l,v)=>`<div class="c-row"><div><div class="lab">${l}</div><div class="val">${esc(v)}</div></div><button class="btn btn-ghost btn-sm" data-copy="${esc(v)}" type="button">Copy</button></div>`;
+  return `<section class="block"><div class="wrap"><span class="eyebrow">Contact</span><h2 style="font-size:clamp(32px,4.5vw,52px);font-weight:800;margin:10px 0 32px;max-width:18ch">Let's talk about your project.</h2>
+  <div class="contact"><div class="c-list">${row("Phone",c.phone1)}${row("Phone",c.phone2)}${row("Email",c.email)}${row("Office",c.address)}${row("Postal",c.postal)}</div>
+  <form class="card" id="contactForm" novalidate><div class="fields">
+   <label class="f">Full name<input id="cf-name" required autocomplete="name"></label>
+   <label class="f">Organisation<input id="cf-org" autocomplete="organization"></label>
+   <label class="f">Email<input id="cf-email" type="email" autocomplete="email"></label>
+   <label class="f">Phone<input id="cf-phone" type="tel" autocomplete="tel" placeholder="+255 …"></label>
+   <label class="f full">Service needed<select id="cf-svc"><option value="">Select a service</option>${C.services.map(s=>`<option>${esc(s.title)}</option>`).join("")}<option>Other</option></select></label>
+   <label class="f full">Message<textarea id="cf-msg" required placeholder="Tell us about the site, scope and timeline."></textarea></label>
+  </div><div style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Send message</button><span class="note">We reply within one working day.</span></div><div id="cfMsg"></div></form></div></div></section>${footer()}`;}
+
+/* ---------- Admin ---------- */
+const TABS=[["dashboard","Dashboard"],["company","Company info"],["home","Home page"],["about","About & values"],["services","Services"],["process","Approach & why us"],["markets","Markets"],["projects","Our Jobs"],["testimonials","Testimonials"],["messages","Messages"],["users","Users"]];
+function visibleTabs(){const r=role();if(r==="superadmin")return TABS;if(r==="editor")return TABS.filter(t=>t[0]!=="users");return TABS.filter(t=>["dashboard","projects","testimonials","messages"].includes(t[0]))}
+function keepVals(ids,fn){const v={};ids.forEach(i=>{const el=document.getElementById(i);if(el)v[i]=el.value});fn();ids.forEach(i=>{const el=document.getElementById(i);if(el&&v[i]!==undefined)el.value=v[i]})}
+const USER_FORM_IDS=["uf-name","uf-user","uf-role","uf-pass","uf-pass2"];
+function usersAdmin(){
+  if(!isSuper())return `<div class="empty">Only a Super Admin can manage users.</div>`;
+  const writable=canSave();
+  const me=S.me||{};
+  const intro=me.builtin?`<div class="mode"><span class="dot" style="background:var(--signal)"></span><span><strong>You are signed in with the built-in demo account.</strong> Create a Super Admin account for yourself below. Once one exists, the demo login (${DEMO.user} / ${DEMO.pass}) stops working.</span></div>`:"";
+  const roleOpts=sel=>Object.entries(ROLES).map(([k,r])=>`<option value="${k}" ${k===sel?"selected":""}>${r.label}</option>`).join("");
+  const form=writable?`<form class="card" id="userForm" novalidate autocomplete="off"><h3 style="font-size:19px;margin-bottom:4px">Add a user</h3><p class="note" style="margin-bottom:14px">The person signs in on the Admin page with this username and password.</p><div class="fields">
+    <label class="f">Full name *<input id="uf-name" placeholder="e.g. Asha Mwakyusa" maxlength="60"></label>
+    <label class="f">Username or email *<input id="uf-user" placeholder="e.g. asha or asha@neoctech.co.tz" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="60"></label>
+    <label class="f full">Role *<select id="uf-role">${roleOpts("editor")}</select></label>
+    <label class="f">Password *<input id="uf-pass" type="password" autocomplete="new-password" placeholder="At least 8 characters"></label>
+    <label class="f">Confirm password *<input id="uf-pass2" type="password" autocomplete="new-password"></label>
+    </div><div style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Create user</button><span class="note">Share the password with the person privately.</span></div><div id="uMsg"></div></form>`
+    :`<div class="mode"><span class="dot" style="background:var(--muted)"></span><span>View only: users can be changed only by the page owner or an Editor of this page.</span></div>`;
+  const roleTable=`<div class="table-wrap" style="margin-top:20px"><table class="info"><tbody>${Object.values(ROLES).map(r=>`<tr><th>${r.label}</th><td>${r.desc}</td></tr>`).join("")}</tbody></table></div>`;
+  const supers=S.users.filter(u=>u.active&&u.role==="superadmin").length;
+  const rows=S.users.length?S.users.slice().sort((a,b)=>(a.createdAt||0)-(b.createdAt||0)).map(u=>{
+    const self=u.id===me.id;const lastSuper=u.active&&u.role==="superadmin"&&supers<=1;const lock=!writable||self;
+    const pw=S.confirm==="upw:"+u.id?`<div class="u-inline"><input id="upw-${esc(u.id)}" type="password" placeholder="New password (8+ characters)" autocomplete="new-password"><button class="btn btn-primary btn-sm" data-act="u-pw-save" data-id="${esc(u.id)}">Save password</button><button class="btn btn-ghost btn-sm" data-act="u-cancel">Cancel</button></div>`:"";
+    const del=S.confirm==="udel:"+u.id?`<span class="note">Delete ${esc(u.name)}?</span><button class="btn btn-danger btn-sm" data-act="u-del-yes" data-id="${esc(u.id)}">Delete</button><button class="btn btn-ghost btn-sm" data-act="u-cancel">Cancel</button>`
+      :`<button class="btn btn-danger btn-sm" data-act="u-del" data-id="${esc(u.id)}" ${lock||lastSuper?"disabled":""}>Delete</button>`;
+    return `<div class="u-row ${u.active?"":"off"}"><span class="avatar" aria-hidden="true">${esc(initials(u.name))}</span>
+      <div class="u-main"><strong>${esc(u.name)}${self?` <span class="pill">You</span>`:""}</strong><div class="proj-meta"><span class="mono">${esc(u.username)}</span><span>${u.active?"Active":"Deactivated"}</span><span>Last sign-in ${u.lastLogin?fmtDate(u.lastLogin):"never"}</span></div></div>
+      <label class="u-role"><span class="sr">Role for ${esc(u.name)}</span><select data-urole="${esc(u.id)}" ${lock||lastSuper?"disabled":""}>${roleOpts(u.role)}</select></label>
+      <div class="act"><button class="btn btn-ghost btn-sm" data-act="u-pw" data-id="${esc(u.id)}" ${writable?"":"disabled"}>Reset password</button>
+      <button class="btn btn-ghost btn-sm" data-act="u-toggle" data-id="${esc(u.id)}" ${lock||lastSuper?"disabled":""}>${u.active?"Deactivate":"Activate"}</button>${del}</div>${pw}</div>`}).join("")
+    :`<div class="empty">No user accounts yet. Create the first one above. Make it a Super Admin so you are not locked out.</div>`;
+  return `${intro}${form}${roleTable}<h3 style="font-size:20px;margin:28px 0 14px">Admin users (${S.users.length})</h3><div class="ed-list">${rows}</div>
+  ${S.users.length?`<p class="note" style="margin-top:12px">You cannot change your own role, deactivate yourself, or remove the last active Super Admin.</p>`:""}`;}
+function projectsAdmin(){
+  const can=canWrite()&&(S.mode==="local"||(S.mode==="live"&&S.assets));
+  const note=S.mode==="live"&&!S.assets?`<div class="mode"><span class="dot" style="background:var(--signal)"></span><span>Photo uploads are not available in this view. Open the page as its owner or an Editor to post jobs.</span></div>`:
+    S.mode==="readonly"?`<div class="mode"><span class="dot" style="background:var(--muted)"></span><span>View only: only the owner or an Editor can post or delete jobs.</span></div>`:
+    role()==="viewer"?`<div class="mode"><span class="dot" style="background:var(--muted)"></span><span>Your role is Viewer. Ask a Super Admin for Editor access to post or delete jobs.</span></div>`:"";
+  const svcOpts=S.content.services.map(s=>`<option>${esc(s.title)}</option>`).join("");
+  const form=can?`<form class="card" id="projForm" novalidate><h3 style="font-size:19px;margin-bottom:14px">Post a completed job</h3><p class="note" style="margin:-6px 0 14px">It appears on the Home page and the Our Jobs page as soon as you post it.</p><div class="fields">
+    <label class="f full">Job title *<input id="pj-title" placeholder="e.g. Fibre backbone for head office" maxlength="90"></label>
+    <label class="f">Client<input id="pj-client" placeholder="Client or sector"></label>
+    <label class="f">Location<input id="pj-loc" placeholder="e.g. Dar es Salaam"></label>
+    <label class="f">Service<select id="pj-svc"><option value="">Select a service</option>${svcOpts}</select></label>
+    <label class="f">Completed<input id="pj-date" type="month"></label>
+    <label class="f full">Description<textarea id="pj-desc" rows="4" placeholder="Scope of work, equipment installed, result for the client."></textarea></label>
+    <div class="full"><label class="drop" id="pj-drop" for="pj-files"><strong>Choose photos</strong> or drop them here<br><span class="note">JPG, PNG or WebP · up to 8 photos · resized automatically</span></label>
+    <input id="pj-files" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+    <div class="thumbs" id="pj-thumbs">${S.upl.map((u,k)=>`<div class="thumb"><img src="${u.preview}" alt="Selected photo ${k+1}"><button type="button" data-rmupl="${k}" aria-label="Remove photo">✕</button></div>`).join("")}</div></div>
+    </div><div style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap"><button class="btn btn-primary" type="submit" ${S.busy?"disabled":""}>${S.busy?"Posting…":"Post job"}</button><span class="note">${S.upl.length} photo${S.upl.length===1?"":"s"} selected</span></div><div id="pjMsg"></div></form>`:"";
+  const list=S.projects.length?`<div class="ed-list">${S.projects.map(p=>`<div class="adm-proj"><div class="pi">${p.images&&p.images[0]?`<img src="${esc(imgSrc(p.images[0]))}" alt="">`:`<div class="ph">No photo</div>`}</div>
+    <div style="min-width:0"><strong>${esc(p.title)}</strong><div class="proj-meta">${esc(p.service||"No service")} · ${esc(p.client||"—")} · ${(p.images||[]).length} photos · added ${fmtDate(p.createdAt)}</div></div>
+    <div class="act"><button class="btn btn-ghost btn-sm" data-proj="${esc(p.id)}">View</button>${can?(S.confirm==="pdel:"+p.id?`<span class="note">Delete this job and its photos?</span><button class="btn btn-danger btn-sm" data-act="pdel-yes" data-id="${esc(p.id)}">Delete</button><button class="btn btn-ghost btn-sm" data-act="pdel-no">Cancel</button>`:`<button class="btn btn-danger btn-sm" data-act="pdel" data-id="${esc(p.id)}">Delete</button>`):""}</div></div>`).join("")}</div>`
+    :`<div class="empty">No jobs posted yet. Post your first completed job with the form above.</div>`;
+  return `${note}${form}<h3 style="font-size:20px;margin:28px 0 14px">Posted jobs (${S.projects.length})</h3>${list}`;}
+const TF_IDS=["tf-name","tf-role","tf-company","tf-quote","tf-rating","tf-job"],TF_CHECKS=["tf-ok","tf-visible"];
+function keepTF(fn){const c={};TF_CHECKS.forEach(i=>{const el=document.getElementById(i);if(el)c[i]=el.checked});keepVals(TF_IDS,fn);TF_CHECKS.forEach(i=>{const el=document.getElementById(i);if(el&&c[i]!==undefined)el.checked=c[i]})}
+function testisAdmin(){const can=canWrite();const E=S.tEdit?S.testis.find(t=>t.id===S.tEdit):null;const v=E||{};
+  const note=!can?`<div class="mode"><span class="dot" style="background:var(--muted)"></span><span>${role()==="viewer"?"Your role is Viewer. Ask a Super Admin for Editor access to add or change testimonials.":"View only: only the owner or an Editor can change testimonials."}</span></div>`:"";
+  const jobOpts=`<option value="">Not linked to a job</option>`+S.projects.map(p=>`<option value="${esc(p.id)}" ${v.jobId===p.id?"selected":""}>${esc(p.title)}</option>`).join("");
+  const form=can?`<form class="card" id="testiForm" novalidate><h3 style="font-size:19px;margin-bottom:4px">${E?"Edit testimonial":"Add a testimonial"}</h3><p class="note" style="margin-bottom:14px">Use the client's real words, and only with their permission.</p><div class="fields">
+    <label class="f">Client name *<input id="tf-name" maxlength="60" value="${esc(v.name)}" placeholder="Person who gave the feedback"></label>
+    <label class="f">Job title<input id="tf-role" maxlength="60" value="${esc(v.role)}" placeholder="e.g. IT Manager"></label>
+    <label class="f">Organisation<input id="tf-company" maxlength="80" value="${esc(v.company)}" placeholder="Company or institution"></label>
+    <label class="f">Rating<select id="tf-rating"><option value="0">No rating</option>${[5,4,3,2,1].map(n=>`<option value="${n}" ${+v.rating===n?"selected":""}>${n} star${n>1?"s":""}</option>`).join("")}</select></label>
+    <label class="f full">What the client said * <span class="note" id="tf-count"></span><textarea id="tf-quote" rows="4" maxlength="400" placeholder="Their feedback in their own words, up to 400 characters.">${esc(v.quote)}</textarea></label>
+    <label class="f full">Related job<select id="tf-job">${jobOpts}</select></label>
+    <label class="chk full"><input type="checkbox" id="tf-ok" ${E?"checked":""}> The client agreed to have this quote and their name shown on the website.</label>
+    <label class="chk full"><input type="checkbox" id="tf-visible" ${E?(v.visible?"checked":""):"checked"}> Show on the website</label>
+    </div><div style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">${E?"Save changes":"Add testimonial"}</button>${E?`<button class="btn btn-ghost" type="button" data-act="t-cancel">Cancel editing</button>`:""}</div><div id="tMsg"></div></form>`:"";
+  const list=S.testis.length?`<div class="ed-list">${S.testis.slice().sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(t=>{const job=t.jobId&&S.projects.find(p=>p.id===t.jobId);
+    return `<div class="t-row ${t.visible?"":"off"}"><div style="min-width:0"><div class="t-q">“${esc(t.quote)}”</div>
+    <div class="proj-meta"><strong style="font-family:var(--f-body);color:var(--ink)">${esc(t.name)}</strong>${t.role?`<span>${esc(t.role)}</span>`:""}${t.company?`<span>${esc(t.company)}</span>`:""}${t.rating?`<span>${t.rating}/5</span>`:""}${job?`<span>Job: ${esc(job.title)}</span>`:""}<span class="pill">${t.visible?"Shown":"Hidden"}</span></div></div>
+    ${can?`<div class="act">${S.confirm==="tdel:"+t.id?`<span class="note">Delete this testimonial?</span><button class="btn btn-danger btn-sm" data-act="t-del-yes" data-id="${esc(t.id)}">Delete</button><button class="btn btn-ghost btn-sm" data-act="t-del-no">Cancel</button>`
+      :`<button class="btn btn-ghost btn-sm" data-act="t-edit" data-id="${esc(t.id)}">Edit</button><button class="btn btn-ghost btn-sm" data-act="t-toggle" data-id="${esc(t.id)}">${t.visible?"Hide":"Show"}</button><button class="btn btn-danger btn-sm" data-act="t-del" data-id="${esc(t.id)}">Delete</button>`}</div>`:""}</div>`}).join("")}</div>`
+    :`<div class="empty">No testimonials yet. When a client is happy with a job, ask if you may quote them, then add it here. The Home page section appears after the first one is shown.</div>`;
+  return `${note}${form}<h3 style="font-size:20px;margin:28px 0 14px">Testimonials (${S.testis.length})</h3>${list}`;}
+function modeBanner(){const m=S.mode;
+  const map={live:["var(--ok)","Live: changes you save are published to the website for every visitor."],
+   local:["var(--signal)","Demo mode: changes are saved in this browser only. Open the published page while signed in as its owner to edit the live site."],
+   readonly:["var(--muted)","View only: you can browse the admin panel, but only the owner or an Editor can save changes."],
+   connecting:["var(--muted)","Connecting to the site database…"]};
+  const [col,t]=map[m]||map.connecting;return `<div class="mode"><span class="dot" style="background:${col}"></span><span>${t}</span></div>`;}
+const canSave=()=>S.mode==="live"||S.mode==="local";
+
+function inp(path,label,opts={}){const v=getPath(S.draft,path);const id="ed-"+path.replace(/\./g,"-");
+  if(opts.area)return `<label class="f ${opts.full?"full":""}">${label}<textarea id="${id}" data-path="${path}" ${opts.lines?'data-lines="1"':""} rows="${opts.rows||4}">${esc(opts.lines?(v||[]).join("\n"):v)}</textarea></label>`;
+  return `<label class="f ${opts.full?"full":""}">${label}<input id="${id}" data-path="${path}" value="${esc(v)}"></label>`;}
+function getPath(o,p){return p.split(".").reduce((a,k)=>a==null?a:a[k],o)}
+function setPath(o,p,v){const ks=p.split(".");let a=o;for(let i=0;i<ks.length-1;i++)a=a[ks[i]];a[ks.at(-1)]=v}
+
+function listEditor(key,label){const L=S.draft[key];
+  return `<div class="ed-list">${L.map((x,i)=>`<div class="ed-row"><div class="ed-top"><span class="idx">${label} ${i+1}</span>
+  <button class="icon-btn" data-act="up" data-list="${key}" data-i="${i}" ${i===0?"disabled":""} aria-label="Move up">↑</button>
+  <button class="icon-btn" data-act="down" data-list="${key}" data-i="${i}" ${i===L.length-1?"disabled":""} aria-label="Move down">↓</button>
+  <button class="icon-btn" data-act="del" data-list="${key}" data-i="${i}" aria-label="Remove">✕</button></div>
+  <div class="fields">${inp(`${key}.${i}.t`,"Title",{full:true})}${inp(`${key}.${i}.d`,"Description",{area:true,full:true,rows:2})}</div></div>`).join("")}</div>
+  <button class="btn btn-ghost" style="margin-top:14px" data-act="add" data-list="${key}">+ Add ${label.toLowerCase()}</button>`;}
+
+function servicesEditor(){const L=S.draft.services;
+  return `<div class="ed-list">${L.map((s,i)=>{const [fn,fc]=fiber(s.fiber);return `<div class="ed-row"><div class="ed-top"><span class="idx"><span class="fiber-dot" style="background:${fc};display:inline-block;vertical-align:-1px;margin-right:6px"></span>F${String(i+1).padStart(2,"0")} · ${fn}</span>
+  <button class="icon-btn" data-act="up" data-list="services" data-i="${i}" ${i===0?"disabled":""} aria-label="Move up">↑</button>
+  <button class="icon-btn" data-act="down" data-list="services" data-i="${i}" ${i===L.length-1?"disabled":""} aria-label="Move down">↓</button>
+  <button class="icon-btn" data-act="del" data-list="services" data-i="${i}" aria-label="Remove service">✕</button></div>
+  <div class="fields">${inp(`services.${i}.title`,"Service name")}
+  <label class="f">Fibre colour<select id="ed-services-${i}-fiber" data-path="services.${i}.fiber" data-num="1">${FIBERS.map((f,k)=>`<option value="${k}" ${+s.fiber===k?"selected":""}>${k+1} · ${f[0]}</option>`).join("")}</select></label>
+  ${inp(`services.${i}.summary`,"Short summary",{area:true,full:true,rows:2})}
+  ${inp(`services.${i}.items`,"Capabilities (one per line)",{area:true,full:true,lines:true,rows:5})}</div></div>`}).join("")}</div>
+  <button class="btn btn-ghost" style="margin-top:14px" data-act="add" data-list="services">+ Add service</button>`;}
+
+function savebar(){const st=S.dirty?`<span class="st dirty">Unsaved changes</span>`:`<span class="st">All changes saved · last update ${fmtDate(S.content.updatedAt)}</span>`;
+  const reset=S.confirm==="reset"?`<span class="note">Restore the original profile content?</span><button class="btn btn-danger btn-sm" data-act="reset-yes">Yes, restore</button><button class="btn btn-ghost btn-sm" data-act="reset-no">Cancel</button>`:`<button class="btn btn-ghost btn-sm" data-act="reset">Restore defaults</button>`;
+  return `<div class="savebar">${st}${reset}<button class="btn btn-ghost btn-sm" data-act="discard" ${S.dirty?"":"disabled"}>Discard</button><button class="btn btn-primary btn-sm" data-act="save" ${S.dirty&&canWrite()?"":"disabled"}>Save & publish</button></div>`;}
+
+function adminTab(){if(!visibleTabs().some(x=>x[0]===S.tab))S.tab="dashboard";const t=S.tab,D=S.draft;const unread=S.messages.filter(m=>!m.read).length;
+  if(t==="dashboard")return `<div class="stats"><div class="stat"><div class="v">${S.content.services.length}</div><div class="l">Service lines</div></div><div class="stat"><div class="v">${S.messages.length}</div><div class="l">Messages received</div></div><div class="stat"><div class="v" style="color:var(--signal)">${unread}</div><div class="l">Unread messages</div></div><div class="stat"><div class="v">${S.projects.length}</div><div class="l">Jobs posted</div></div></div>
+   <div class="card"><h3 style="font-size:18px;margin-bottom:8px">Quick actions</h3><p class="note" style="margin-bottom:14px">Last published update: ${fmtDate(S.content.updatedAt)}</p><div style="display:flex;flex-wrap:wrap;gap:10px">${role()!=="viewer"?`<button class="btn btn-ghost" data-tab="home">Edit hero text</button><button class="btn btn-ghost" data-tab="services">Manage services</button><button class="btn btn-ghost" data-tab="projects">Post a job</button><button class="btn btn-ghost" data-tab="testimonials">Add a testimonial</button>`:`<button class="btn btn-ghost" data-tab="projects">See jobs</button>`}<button class="btn btn-ghost" data-tab="messages">Read messages</button>${isSuper()?`<button class="btn btn-ghost" data-tab="users">Manage users</button>`:""}<a class="btn btn-primary" href="#home">View website</a></div></div>
+   <div class="card" style="margin-top:16px"><h3 style="font-size:18px;margin-bottom:12px">Recent messages</h3>${S.messages.slice(0,3).map(m=>`<div style="padding:10px 0;border-top:1px solid var(--line)"><strong>${esc(m.name)}</strong> <span class="msg-meta">${esc(m.service||"General")} · ${fmtDate(m.at)}</span><div class="note" style="overflow-wrap:anywhere">${esc(String(m.message).slice(0,140))}</div></div>`).join("")||`<p class="note">No messages yet. Enquiries sent from the Contact page appear here.</p>`}</div>`;
+  if(t==="company")return `<div class="card"><div class="fields">${inp("company.name","Company name",{full:true})}${inp("company.tagline","Tagline",{full:true})}${inp("company.phone1","Phone 1")}${inp("company.phone2","Phone 2")}${inp("company.email","Email")}${inp("company.postal","Postal address")}${inp("company.address","Physical address",{full:true})}${inp("company.reg","Registration number")}${inp("company.tin","TIN")}${inp("company.md","Managing Director")}${inp("company.established","Year established")}${inp("company.country","Country of registration")}</div></div>${savebar()}`;
+  if(t==="home")return `<div class="card"><div class="fields">${inp("hero.eyebrow","Small label above headline",{full:true})}${inp("hero.headline","Headline",{full:true})}${inp("hero.sub","Supporting text",{area:true,full:true,rows:3})}${inp("quality","Quality & security statement",{area:true,full:true,rows:4})}</div></div>${savebar()}`;
+  if(t==="about")return `<div class="card"><div class="fields">${inp("about","About the company (blank line between paragraphs)",{area:true,full:true,rows:9})}${inp("vision","Vision",{area:true,full:true,rows:3})}${inp("mission","Mission",{area:true,full:true,rows:3})}</div></div><h3 style="font-size:20px;margin:28px 0 14px">Core values</h3>${listEditor("values","Value")}${savebar()}`;
+  if(t==="services")return servicesEditor()+savebar();
+  if(t==="process")return `<h3 style="font-size:20px;margin-bottom:14px">Project delivery stages</h3>${listEditor("approach","Stage")}<h3 style="font-size:20px;margin:32px 0 14px">Why choose NEOC</h3>${listEditor("why","Reason")}${savebar()}`;
+  if(t==="markets")return `<div class="card"><div class="fields">${inp("markets","Target sectors (one per line)",{area:true,full:true,lines:true,rows:11})}</div></div>${savebar()}`;
+  if(t==="projects")return projectsAdmin();
+  if(t==="users")return usersAdmin();
+  if(t==="testimonials")return testisAdmin();
+  if(t==="messages"){if(!S.messages.length)return `<div class="empty">No messages yet. When someone sends the form on the Contact page, it shows up here.</div>`;
+   return `<div class="ed-list">${S.messages.map(m=>`<div class="msg ${m.read?"":"unread"}"><div class="msg-h"><strong>${esc(m.name)}</strong><span class="msg-meta">${esc(m.org||"")}</span><span class="msg-meta" style="margin-left:auto">${fmtDate(m.at)}</span></div>
+   <div class="msg-meta">${esc(m.service||"General enquiry")} · ${esc(m.email||"no email")} · ${esc(m.phone||"no phone")}</div><div class="msg-body">${esc(m.message)}</div>
+   <div class="msg-act">${!canWrite()?"":m.read?`<button class="btn btn-ghost btn-sm" data-act="unread" data-id="${esc(m.key)}">Mark unread</button>`:`<button class="btn btn-ghost btn-sm" data-act="read" data-id="${esc(m.key)}">Mark as read</button>`}
+   ${!(canWrite()&&isSuper())?"":S.confirm==="del:"+m.key?`<span class="note">Delete this message?</span><button class="btn btn-danger btn-sm" data-act="mdel-yes" data-id="${esc(m.key)}">Delete</button><button class="btn btn-ghost btn-sm" data-act="mdel-no">Cancel</button>`:`<button class="btn btn-ghost btn-sm" data-act="mdel" data-id="${esc(m.key)}">Delete</button>`}</div></div>`).join("")}</div>`;}
+  return "";}
+
+function pageAdmin(){
+  if(!S.authed)return `<div class="login"><span class="eyebrow">Admin</span><h2>Sign in to manage the site</h2><p class="note" style="margin-bottom:20px">${hasSuper()?"Sign in with the account a Super Admin created for you.":`First sign-in: <span class="mono">${DEMO.user}</span> / <span class="mono">${DEMO.pass}</span>. Then open <strong>Users</strong> and create your own accounts; the demo login stops working once a Super Admin exists.`}</p>
+  <form class="card" id="loginForm" novalidate><div class="fields"><label class="f full">Username<input id="lg-user" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></label><label class="f full">Password<input id="lg-pass" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false"></label></div><button class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center" type="submit">Sign in</button><div id="lgMsg"></div></form></div>`;
+  if(!S.draft)S.draft=clone(S.content);
+  if(!visibleTabs().some(x=>x[0]===S.tab))S.tab="dashboard";
+  const unread=S.messages.filter(m=>!m.read).length;const title=(TABS.find(x=>x[0]===S.tab)||TABS[0])[1];
+  return `<div class="admin"><aside class="side"><span class="lbl">Manage</span>${visibleTabs().map(([k,l])=>`<button data-tab="${k}" class="${S.tab===k?"on":""}">${l}${k==="messages"&&unread?`<span class="badge">${unread}</span>`:""}</button>`).join("")}
+  <span class="lbl" style="margin-top:14px">Account</span><div class="me-card"><span class="avatar" aria-hidden="true">${esc(initials(S.me&&S.me.name))}</span><span style="min-width:0"><strong>${esc(S.me?S.me.name:"")}</strong><span class="note" style="display:block">${esc(ROLES[role()].label)}</span></span></div><button data-act="logout">Sign out</button></aside>
+  <div class="main"><div class="main-head"><h2>${title}</h2><a class="btn btn-ghost btn-sm" href="#home">View website ↗</a></div>${modeBanner()}<div id="adminBody">${adminTab()}</div></div></div>`;}
+
+/* ---------- Render / routing ---------- */
+const ROUTES={home:pageHome,about:pageAbout,services:pageServices,projects:pageProjects,jobs:pageProjects,contact:pageContact,admin:pageAdmin};
+let stopFibers=null;
+function render(keepScroll){const r=ROUTES[S.route]?S.route:"home";const y=scrollY;
+  document.getElementById("view").innerHTML=ROUTES[r]();
+  document.querySelectorAll(".nav a").forEach(a=>a.classList.toggle("on",a.dataset.r===r));
+  if(stopFibers){stopFibers();stopFibers=null}
+  if(r==="home")stopFibers=startFibers();
+  if(keepScroll)scrollTo(0,y);}
+function renderAdminBody(){const b=document.getElementById("adminBody");if(!b){render(true);return}b.innerHTML=adminTab();
+  document.querySelectorAll(".side button[data-tab]").forEach(x=>x.classList.toggle("on",x.dataset.tab===S.tab));}
+function go(r){S.route=ROUTES[r]?r:"home";S.confirm=null;S.lb=null;renderLB();
+  document.getElementById("nav").classList.remove("open");document.getElementById("menuBtn").setAttribute("aria-expanded","false");render();scrollTo(0,0);}
+function route(){go((location.hash||"").replace("#",""))}
+addEventListener("hashchange",route);
+/* Internal links are routed in script, so navigation works even where the host frame blocks hash changes. */
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+  const r=a.getAttribute("href").slice(1);if(!ROUTES[r])return;e.preventDefault();e.stopImmediatePropagation();
+  go(r);try{history.replaceState(null,"","#"+r)}catch(err){}},true);
+document.getElementById("menuBtn").addEventListener("click",e=>{const n=document.getElementById("nav");const o=n.classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o)});
+
+/* ---------- Hero fibre animation ---------- */
+function startFibers(){const cv=document.getElementById("fibers");if(!cv)return null;const ctx=cv.getContext("2d");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;let raf,w,h,dpr;
+  const lines=FIBERS.map((f,i)=>({c:f[1],y:.12+i*.07,a:18+((i*37)%30),ph:i*.9,sp:.05+((i*13)%7)/90,p:((i*0.31)%1)}));
+  function size(){dpr=Math.min(devicePixelRatio||1,2);w=cv.clientWidth||0;h=cv.clientHeight||0;cv.width=Math.max(1,Math.round(w*dpr));cv.height=Math.max(1,Math.round(h*dpr));ctx.setTransform(dpr,0,0,dpr,0,0)}
+  const yAt=(L,x)=>L.y*h+Math.sin(x/w*Math.PI*2+L.ph)*L.a;
+  const ok=v=>Number.isFinite(v);
+  function draw(t){
+    if(!cv.isConnected)return;                       /* page changed: stop quietly */
+    if(!(w>40&&h>40)||!ok(t)){if(!reduce)raf=requestAnimationFrame(draw);return}   /* not laid out yet: wait */
+    ctx.clearRect(0,0,w,h);const x0=w*.38;
+    lines.forEach(L=>{const px0=x0+((L.p+(reduce?0:t*L.sp/1000))%1)*(w-x0);if(!ok(px0)||!ok(yAt(L,px0)))return;ctx.beginPath();for(let x=x0;x<=w+10;x+=8){const y=yAt(L,x);x===x0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+      ctx.strokeStyle=L.c;ctx.globalAlpha=.22;ctx.lineWidth=1.5;ctx.stroke();
+      const px=x0+((L.p+(reduce?0:t*L.sp/1000))%1)*(w-x0);const py=yAt(L,px);
+      const g=ctx.createRadialGradient(px,py,0,px,py,14);g.addColorStop(0,L.c);g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.globalAlpha=.9;ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,14,0,7);ctx.fill();ctx.globalAlpha=1;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(px,py,1.8,0,7);ctx.fill()});
+    ctx.globalAlpha=1;if(!reduce)raf=requestAnimationFrame(draw)}
+  size();draw(0);const ro=new ResizeObserver(()=>{size();if(reduce)draw(0)});ro.observe(cv);
+  return()=>{cancelAnimationFrame(raf);ro.disconnect()};}
+
+/* ---------- Events ---------- */
+document.addEventListener("click",async e=>{
+  const cp=e.target.closest("[data-copy]");if(cp){const v=cp.dataset.copy;try{await navigator.clipboard.writeText(v);toast("Copied: "+v)}catch(err){const s=getSelection(),r=document.createRange();r.selectNodeContents(cp.parentElement.querySelector(".val"));s.removeAllRanges();s.addRange(r);toast("Selected. Press copy on your device.")}return}
+  const lbEl=e.target.id==="lb";if(lbEl){S.lb=null;renderLB();return}
+  const pj=e.target.closest("[data-proj]");if(pj){S.lb={id:pj.dataset.proj,i:0};renderLB();return}
+  const li=e.target.closest("[data-lbi]");if(li&&S.lb){S.lb.i=+li.dataset.lbi;renderLB();return}
+  const pf=e.target.closest("[data-pf]");if(pf){S.pfilter=pf.dataset.pf;render(true);return}
+  const ru=e.target.closest("[data-rmupl]");if(ru){S.upl.splice(+ru.dataset.rmupl,1);keepProjForm(renderAdminBody);return}
+  const tb=e.target.closest("[data-tab]");if(tb){S.tab=tb.dataset.tab;S.confirm=null;renderAdminBody();document.querySelector(".main-head h2").textContent=(TABS.find(x=>x[0]===S.tab)||TABS[0])[1];return}
+  const b=e.target.closest("[data-act]");if(!b)return;const act=b.dataset.act;
+  if(act==="logout"){setMe(null);S.tab="dashboard";render();return}
+  if(["up","down","del","add"].includes(act)){const L=S.draft[b.dataset.list],i=+b.dataset.i;
+    if(act==="up"&&i>0)[L[i-1],L[i]]=[L[i],L[i-1]];
+    if(act==="down"&&i<L.length-1)[L[i+1],L[i]]=[L[i],L[i+1]];
+    if(act==="del")L.splice(i,1);
+    if(act==="add")L.push(b.dataset.list==="services"?{title:"New service",fiber:L.length%12,summary:"",items:[]}:{t:"",d:""});
+    S.dirty=true;renderAdminBody();return}
+  if(act==="discard"){S.draft=clone(S.content);S.dirty=false;renderAdminBody();toast("Changes discarded");return}
+  if(act==="reset"){S.confirm="reset";renderAdminBody();return}
+  if(act==="reset-no"){S.confirm=null;renderAdminBody();return}
+  if(act==="reset-yes"){S.confirm=null;S.draft=clone(DEFAULTS);S.dirty=true;renderAdminBody();toast("Defaults loaded. Press Save to publish them.");return}
+  if(act==="save"){await saveContent();return}
+  if(act==="read"||act==="unread"){await setRead(b.dataset.id,act==="read");return}
+  if(act==="mdel"){S.confirm="del:"+b.dataset.id;renderAdminBody();return}
+  if(act==="mdel-no"){S.confirm=null;renderAdminBody();return}
+  if(act==="mdel-yes"){S.confirm=null;await deleteMsg(b.dataset.id);return}
+  if(act==="lb-close"){S.lb=null;renderLB();return}
+  if(act==="t-edit"){S.tEdit=b.dataset.id;S.confirm=null;renderAdminBody();const f=document.getElementById("testiForm");if(f)f.scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(act==="t-cancel"){S.tEdit=null;renderAdminBody();return}
+  if(act==="t-del"){S.confirm="tdel:"+b.dataset.id;keepTF(renderAdminBody);return}
+  if(act==="t-del-no"){S.confirm=null;keepTF(renderAdminBody);return}
+  if(act==="t-del-yes"||act==="t-toggle"){if(!canWrite())return;const t=S.testis.find(x=>x.id===b.dataset.id);if(!t)return;S.confirm=null;
+    try{if(act==="t-del-yes"){await removeTesti(t.id);if(S.tEdit===t.id)S.tEdit=null;toast("Testimonial deleted")}else{await storeTesti({...t,visible:!t.visible});toast(t.visible?"Hidden from the website":"Now shown on the website")}}catch(e){tFail(e)}
+    keepTF(renderAdminBody);return}
+  if(act==="u-pw"){S.confirm="upw:"+b.dataset.id;keepVals(USER_FORM_IDS,renderAdminBody);const el=document.getElementById("upw-"+b.dataset.id);if(el)el.focus();return}
+  if(act==="u-del"){S.confirm="udel:"+b.dataset.id;keepVals(USER_FORM_IDS,renderAdminBody);return}
+  if(act==="u-cancel"){S.confirm=null;keepVals(USER_FORM_IDS,renderAdminBody);return}
+  if(act==="u-toggle"||act==="u-del-yes"||act==="u-pw-save"){await userAction(act,b.dataset.id);return}
+  if(act==="pdel"){S.confirm="pdel:"+b.dataset.id;keepProjForm(renderAdminBody);return}
+  if(act==="pdel-no"){S.confirm=null;keepProjForm(renderAdminBody);return}
+  if(act==="pdel-yes"){S.confirm=null;await deleteProject(b.dataset.id);return}
+});
+document.addEventListener("keydown",e=>{if(!S.lb)return;const p=S.projects.find(x=>x.id===S.lb.id);const n=(p&&p.images||[]).length;
+  if(e.key==="Escape"){S.lb=null;renderLB()}else if(e.key==="ArrowRight"&&n>1){S.lb.i=(S.lb.i+1)%n;renderLB()}else if(e.key==="ArrowLeft"&&n>1){S.lb.i=(S.lb.i-1+n)%n;renderLB()}});
+/* keep typed project-form values across a re-render */
+function keepProjForm(fn){const ids=["pj-title","pj-client","pj-loc","pj-svc","pj-date","pj-desc"];const v={};ids.forEach(i=>{const el=document.getElementById(i);if(el)v[i]=el.value});fn();ids.forEach(i=>{const el=document.getElementById(i);if(el&&v[i]!==undefined)el.value=v[i]})}
+async function addFiles(files){const list=[...files].filter(f=>/^image\/(jpeg|png|webp)$/.test(f.type));const room=8-S.upl.length;
+  if(!list.length){toast("Choose JPG, PNG or WebP photos.");return}
+  if(list.length>room)toast(`Only ${room} more photo${room===1?"":"s"} can be added (8 per job).`);
+  for(const f of list.slice(0,Math.max(room,0))){try{S.upl.push(await shrink(f,S.mode==="local"?1200:1800,S.mode==="local"?.72:.84))}catch(err){toast("One photo could not be read and was skipped.")}}
+  keepProjForm(renderAdminBody);}
+function shrink(file,max,q){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const im=new Image();
+  im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+    const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);
+    const preview=c.toDataURL("image/jpeg",q);c.toBlob(b=>b?res({blob:b,preview}):rej(new Error("encode")),"image/jpeg",q)};
+  im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("load"))};im.src=url})}
+document.addEventListener("change",e=>{if(e.target.id==="pj-files"){addFiles(e.target.files);e.target.value=""}
+  if(e.target.dataset&&e.target.dataset.urole)changeRole(e.target.dataset.urole,e.target.value)});
+document.addEventListener("dragover",e=>{const d=e.target.closest&&e.target.closest("#pj-drop");if(d){e.preventDefault();d.classList.add("over")}});
+document.addEventListener("dragleave",e=>{const d=e.target.closest&&e.target.closest("#pj-drop");if(d)d.classList.remove("over")});
+document.addEventListener("drop",e=>{const d=e.target.closest&&e.target.closest("#pj-drop");if(d){e.preventDefault();d.classList.remove("over");addFiles(e.dataTransfer.files)}});
+document.addEventListener("input",e=>{if(e.target.id==="tf-quote"){const c=document.getElementById("tf-count");if(c)c.textContent=`(${e.target.value.length}/400)`}});
+document.addEventListener("input",e=>{const el=e.target;if(!el.dataset||!el.dataset.path||!S.draft)return;
+  let v=el.value;if(el.dataset.lines)v=v.split("\n").map(s=>s.trim()).filter(Boolean);if(el.dataset.num)v=+v;
+  setPath(S.draft,el.dataset.path,v);
+  if(!S.dirty){S.dirty=true;const bar=document.querySelector(".savebar");if(bar){bar.outerHTML=savebar()}}
+  if(el.dataset.num)renderAdminBody();});
+/* Forms are handled from the button click and the Enter key as well as "submit",
+   because some embedded viewers block the submit event. */
+document.addEventListener("click",e=>{const btn=e.target.closest&&e.target.closest('button[type="submit"]');if(!btn)return;const f=btn.closest("form");if(!f||!f.id)return;e.preventDefault();handleForm(f)});
+document.addEventListener("keydown",e=>{if(e.key!=="Enter"||e.isComposing)return;const el=e.target;if(!el||el.tagName!=="INPUT"||el.type==="file")return;const f=el.closest("form");if(!f||!f.id)return;e.preventDefault();handleForm(f)});
+document.addEventListener("submit",e=>{e.preventDefault();handleForm(e.target)});
+async function handleForm(f){if(handleForm.busy)return;handleForm.busy=true;try{await formAction(f)}finally{handleForm.busy=false}}
+async function formAction(f){
+  if(f.id==="loginForm"){const u=document.getElementById("lg-user").value.trim().toLowerCase(),p=document.getElementById("lg-pass").value.trim();
+    const out=document.getElementById("lgMsg");const err=t=>{out.innerHTML=`<div class="form-msg err">${t}</div>`};
+    if(!u||!p){err("Enter your username and password.");return}
+    const F=S.fails[u]||{n:0,until:0};
+    if(F.until>Date.now()){err(`Too many wrong attempts. Try again after ${new Date(F.until).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}.`);return}
+    const acc=S.users.find(x=>x.username===u);let me=null;
+    if(acc){if(await hashPw(p,acc.salt)===acc.hash){if(!acc.active){err("This account is deactivated. Ask a Super Admin to activate it.");return}
+        me={id:acc.id,name:acc.name,username:acc.username,role:acc.role};
+        const upd={...acc,lastLogin:Date.now()};storeUser(upd).catch(()=>{});}}
+    else if(!hasSuper()&&u===DEMO.user&&p===DEMO.pass){me={id:"builtin",name:"Demo admin",username:DEMO.user,role:S.mode==="readonly"?"viewer":"superadmin",builtin:true}}
+    if(!me){F.n++;if(F.n>=5){F.until=Date.now()+15*60000;F.n=0}S.fails[u]=F;
+      err(F.until>Date.now()?"Too many wrong attempts. This username is locked for 15 minutes.":`Username or password is wrong.${F.n>=3?` ${5-F.n} attempt${5-F.n===1?"":"s"} left before a 15-minute lock.`:""}`);return}
+    delete S.fails[u];setMe(me);S.tab="dashboard";S.draft=clone(S.content);S.dirty=false;render();toast(`Signed in as ${me.name} (${ROLES[me.role].label})`);return}
+  if(f.id==="testiForm"){const g=id=>document.getElementById(id).value.trim();const out=document.getElementById("tMsg");const err=t=>{out.innerHTML=`<div class="form-msg err">${t}</div>`};
+    if(!canWrite()){err("Your role cannot change testimonials.");return}
+    const rec={name:g("tf-name"),role:g("tf-role"),company:g("tf-company"),quote:g("tf-quote"),rating:+g("tf-rating")||0,jobId:g("tf-job"),visible:document.getElementById("tf-visible").checked};
+    if(!rec.name){err("Enter the client's name.");return}
+    if(rec.quote.length<10){err("Enter what the client said (at least 10 characters).");return}
+    if(!document.getElementById("tf-ok").checked){err("Confirm that the client agreed to be quoted on the website.");return}
+    const old=S.tEdit&&S.testis.find(x=>x.id===S.tEdit);
+    const full=old?{...old,...rec,updatedAt:Date.now()}:{...rec,id:"t"+Date.now().toString(36),createdAt:Date.now(),addedBy:S.me?S.me.name:""};
+    try{await storeTesti(full)}catch(e){tFail(e);return}
+    S.tEdit=null;renderAdminBody();toast(old?"Testimonial updated":full.visible?"Testimonial added. It is now on the Home page.":"Testimonial saved as hidden.");return}
+  if(f.id==="userForm"){const g=id=>document.getElementById(id).value;const out=document.getElementById("uMsg");const err=t=>{out.innerHTML=`<div class="form-msg err">${t}</div>`};
+    if(!isSuper()||!canSave()){err("Only a Super Admin can add users.");return}
+    const name=g("uf-name").trim(),user=g("uf-user").trim().toLowerCase(),r=g("uf-role"),pw=g("uf-pass").trim(),pw2=g("uf-pass2").trim();
+    if(!name){err("Enter the person's full name.");return}
+    if(!/^[a-z0-9._@+-]{3,60}$/.test(user)){err("Username must be 3 to 60 characters: letters, numbers, and . _ @ + - only, no spaces.");return}
+    if(S.users.some(x=>x.username===user)){err("That username is already taken. Choose another.");return}
+    if(!ROLES[r]){err("Choose a role.");return}
+    if(pw.length<8){err("Password must be at least 8 characters.");return}
+    if(pw!==pw2){err("The two passwords do not match.");return}
+    const salt=newSalt();const rec={id:"u"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),name,username:user,role:r,active:true,salt,hash:await hashPw(pw,salt),createdAt:Date.now(),createdBy:S.me?S.me.name:"",lastLogin:null};
+    try{await storeUser(rec)}catch(e){err(e&&e.code==="invalid_argument"?"Saving was refused: your account can view but not edit this site.":"The user could not be saved. Try again.");return}
+    const wasBuiltin=S.me&&S.me.builtin&&r==="superadmin";
+    renderAdminBody();toast(`${name} can now sign in as ${ROLES[r].label}.`);
+    if(wasBuiltin){const o=document.getElementById("uMsg");if(o)o.innerHTML=`<div class="form-msg ok">Super Admin created. The demo login is now off. Sign out and sign in as <strong>${esc(user)}</strong> next time.</div>`}
+    return}
+  if(f.id==="projForm"){const g=id=>document.getElementById(id).value.trim();const out=document.getElementById("pjMsg");
+    const p={title:g("pj-title"),client:g("pj-client"),location:g("pj-loc"),service:g("pj-svc"),date:g("pj-date"),description:g("pj-desc")};
+    if(!p.title||!S.upl.length){out.innerHTML=`<div class="form-msg err">Add a job title and at least one photo.</div>`;return}
+    S.busy=true;keepProjForm(renderAdminBody);const ok=await addProject(p);S.busy=false;
+    if(ok){S.upl=[];renderAdminBody();toast("Job posted. It is now live on Our Jobs.");const o2=document.getElementById("pjMsg");if(o2)o2.innerHTML=`<div class="form-msg ok">Job posted. <a href="#jobs">See it on the Our Jobs page →</a></div>`}
+    else{keepProjForm(renderAdminBody);const o=document.getElementById("pjMsg");if(o)o.innerHTML=`<div class="form-msg err">${esc(addProject.err||"The job could not be posted. Try again.")}</div>`}
+    return}
+  if(f.id==="contactForm"){const g=id=>document.getElementById(id).value.trim();const out=document.getElementById("cfMsg");
+    const m={name:g("cf-name"),org:g("cf-org"),email:g("cf-email"),phone:g("cf-phone"),service:g("cf-svc"),message:g("cf-msg"),at:Date.now(),read:false};
+    if(!m.name||!m.message||(!m.email&&!m.phone)){out.innerHTML=`<div class="form-msg err">Please add your name, a message, and an email or phone number so we can reply.</div>`;return}
+    const btn=f.querySelector("button[type=submit]");btn.disabled=true;
+    const ok=await sendMessage(m);btn.disabled=false;
+    if(ok){f.reset();out.innerHTML=`<div class="form-msg ok">Thank you, ${esc(m.name)}. Your message has been received and our team will get back to you.</div>`}
+    else out.innerHTML=`<div class="form-msg err">Your message could not be saved from this browser. Please email ${esc(S.content.company.email)} or call ${esc(S.content.company.phone1)}.</div>`;}
+}
+
+/* ---------- Data layer ---------- */
+async function saveContent(){if(!canWrite())return;const next=clone(S.draft);next.updatedAt=Date.now();
+  try{if(S.mode==="live")await S.db.doc("site/content").set(next);else LS.set("neoc_content",next);
+    S.content=next;S.draft=clone(next);S.dirty=false;renderAdminBody();toast("Published. The website now shows your changes.");}
+  catch(err){toast(err&&err.code==="invalid_argument"?"Saving was refused: your account can view but not edit this site.":"Couldn't save right now. Check your connection and try again.")}}
+
+async function sendMessage(m){
+  if(S.mode==="local"||!S.db){const all=LS.get("neoc_msgs")||[];m.key="l"+m.at;all.unshift(m);const ok=LS.set("neoc_msgs",all);if(ok){S.messages=all}return ok}
+  if(!S.uid)return false;
+  try{const ref=S.db.doc("inbox/"+S.uid);const snap=await ref.get();const prev=snap.exists?(snap.data().messages||[]):[];
+    const list=[{...m,id:"m"+m.at},...prev].slice(0,50);await ref.set({messages:list});return true}catch(err){return false}}
+
+async function setRead(key,read){const msg=S.messages.find(x=>x.key===key);if(!msg)return;
+  if(S.mode==="local"){const all=(LS.get("neoc_msgs")||[]).map(x=>x.key===key?{...x,read}:x);LS.set("neoc_msgs",all);S.messages=all;renderAdminBody();return}
+  try{const ref=S.db.doc("inbox/"+msg.uid);const snap=await ref.get();if(!snap.exists)return;
+    const list=(snap.data().messages||[]).map(x=>x.id===msg.id?{...x,read}:x);await ref.set({messages:list})}catch(err){toast("Couldn't update the message. Try again.")}}
+
+async function deleteMsg(key){const msg=S.messages.find(x=>x.key===key);if(!msg)return;
+  if(S.mode==="local"){const all=(LS.get("neoc_msgs")||[]).filter(x=>x.key!==key);LS.set("neoc_msgs",all);S.messages=all;renderAdminBody();toast("Message deleted");return}
+  try{const ref=S.db.doc("inbox/"+msg.uid);const snap=await ref.get();if(!snap.exists)return;
+    const list=(snap.data().messages||[]).filter(x=>x.id!==msg.id);if(list.length)await ref.set({messages:list});else await ref.delete();toast("Message deleted")}catch(err){toast("Couldn't delete the message. Try again.")}}
+
+async function addProject(p){addProject.err=null;const now=Date.now();const id="p"+now.toString(36);
+  if(S.mode==="local"){const rec={...p,id,createdAt:now,images:S.upl.map(u=>({src:u.preview}))};const all=[rec,...S.projects];
+    if(!LS.set("neoc_projects",all)){addProject.err="This browser has no room for more photos. Delete an older job or use fewer photos.";return false}
+    S.projects=all;return true}
+  if(!S.assets){addProject.err="Photo uploads are not available in this view.";return false}
+  const imgs=[];
+  try{for(const u of S.upl){const r=await S.assets.upload(u.blob,{type:"image/jpeg"});imgs.push({id:r.id})}
+    await S.db.collection("projects").doc(id).set({...p,id,createdAt:now,images:imgs});return true}
+  catch(err){for(const x of imgs){try{await S.assets.delete(x.id)}catch(e){}}
+    const c=err&&err.code;addProject.err=c==="too_large"?"One photo is too large. Use a smaller photo.":c==="quota_or_state"?"Photo storage is full. Delete older jobs first.":c==="rate_limited"?"Too many uploads at once. Wait a minute and try again.":c==="invalid_argument"?"Saving was refused: your account can view but not edit this site.":"The job could not be posted. Check your connection and try again.";return false}}
+
+/* ---------- Testimonial storage ---------- */
+async function storeTesti(t){if(S.mode==="live"){await S.db.doc("testimonials/"+t.id).set(t)}
+  const i=S.testis.findIndex(x=>x.id===t.id);if(i<0)S.testis.push(t);else S.testis[i]=t;
+  if(S.mode!=="live"&&!LS.set("neoc_testis",S.testis))throw new Error("storage");}
+async function removeTesti(id){if(S.mode==="live")await S.db.doc("testimonials/"+id).delete();S.testis=S.testis.filter(x=>x.id!==id);if(S.mode!=="live")LS.set("neoc_testis",S.testis)}
+const tFail=e=>toast(e&&e.code==="invalid_argument"?"Saving was refused: your account can view but not edit this site.":"The testimonial could not be saved. Try again.");
+
+/* ---------- User storage ---------- */
+async function storeUser(u){
+  if(S.mode==="live"){await S.db.doc("admins/"+u.id).set(u);const i=S.users.findIndex(x=>x.id===u.id);if(i<0)S.users.push(u);else S.users[i]=u;return}
+  const i=S.users.findIndex(x=>x.id===u.id);if(i<0)S.users.push(u);else S.users[i]=u;
+  if(!LS.set("neoc_users",S.users))throw new Error("storage");}
+async function removeUser(id){
+  if(S.mode==="live"){await S.db.doc("admins/"+id).delete()}
+  S.users=S.users.filter(x=>x.id!==id);if(S.mode!=="live")LS.set("neoc_users",S.users);}
+/* Keep the signed-in session in step with the accounts list (role changed, deactivated, deleted). */
+function checkSession(){if(!S.me)return;
+  if(S.me.builtin){if(hasSuper()){setMe(null);if(S.route==="admin")render(true);toast("The demo login is now off. Sign in with your own account.")}return}
+  const u=S.users.find(x=>x.id===S.me.id);
+  if(!u||!u.active){setMe(null);if(S.route==="admin")render(true);toast(!u?"Your account was removed. You have been signed out.":"Your account was deactivated. You have been signed out.");return}
+  if(u.role!==S.me.role||u.name!==S.me.name){setMe({...S.me,role:u.role,name:u.name});if(S.route==="admin")render(true)}}
+async function userAction(act,id){const u=S.users.find(x=>x.id===id);if(!u||!isSuper()||!canSave())return;
+  const self=S.me&&u.id===S.me.id;const lastSuper=u.active&&u.role==="superadmin"&&S.users.filter(x=>x.active&&x.role==="superadmin").length<=1;
+  const fail=e=>toast(e&&e.code==="invalid_argument"?"Saving was refused: your account can view but not edit this site.":"The change could not be saved. Try again.");
+  if(act==="u-toggle"){if(self||lastSuper)return;try{await storeUser({...u,active:!u.active});toast(u.active?`${u.name} is deactivated and can no longer sign in.`:`${u.name} can sign in again.`)}catch(e){fail(e)}}
+  if(act==="u-del-yes"){if(self||lastSuper)return;try{await removeUser(id);toast(`${u.name} was deleted.`)}catch(e){fail(e)}}
+  if(act==="u-pw-save"){const el=document.getElementById("upw-"+id);const pw=(el&&el.value||"").trim();
+    if(pw.length<8){toast("Password must be at least 8 characters.");return}
+    const salt=newSalt();try{await storeUser({...u,salt,hash:await hashPw(pw,salt)});toast(`Password for ${u.name} was changed.`)}catch(e){fail(e);return}}
+  S.confirm=null;keepVals(USER_FORM_IDS,renderAdminBody);}
+async function changeRole(id,r){const u=S.users.find(x=>x.id===id);if(!u||!ROLES[r]||!isSuper()||!canSave())return;
+  const self=S.me&&u.id===S.me.id;const lastSuper=u.active&&u.role==="superadmin"&&S.users.filter(x=>x.active&&x.role==="superadmin").length<=1;
+  if(self||lastSuper){keepVals(USER_FORM_IDS,renderAdminBody);return}
+  try{await storeUser({...u,role:r});toast(`${u.name} is now ${ROLES[r].label}.`)}catch(e){toast("The role could not be changed. Try again.")}
+  keepVals(USER_FORM_IDS,renderAdminBody);}
+
+async function deleteProject(id){const p=S.projects.find(x=>x.id===id);if(!p)return;
+  if(S.mode==="local"){S.projects=S.projects.filter(x=>x.id!==id);LS.set("neoc_projects",S.projects);keepProjForm(renderAdminBody);toast("Job deleted");return}
+  try{await S.db.doc("projects/"+id).delete();for(const x of p.images||[]){if(x.id){try{await S.assets.delete(x.id)}catch(e){}}}toast("Job and photos deleted")}
+  catch(err){toast("Couldn't delete the job. Try again.")}}
+
+function applyContent(c){S.content=mergeDefaults(c);if(!S.dirty)S.draft=null;
+  if(S.route==="admin"&&S.authed){if(!S.dirty){S.draft=clone(S.content);}renderAdminBody()}else render(true);}
+
+function goLocal(){S.mode="local";const c=LS.get("neoc_content");if(c)S.content=mergeDefaults(c);S.messages=LS.get("neoc_msgs")||[];S.projects=LS.get("neoc_projects")||[];S.users=LS.get("neoc_users")||[];S.testis=LS.get("neoc_testis")||[];checkSession();S.draft=null;render(true)}
+
+async function boot(){
+  if(!window.claude||!window.claude.use){goLocal();return}
+  let db=null,user=null,assets=null;
+  try{[db,user,assets]=await Promise.all([claude.use("db"),claude.use("user"),claude.use("assets")])}catch(e){}
+  if(!db){goLocal();return}
+  S.db=db;S.user=user;S.assets=assets;
+  db.collection("testimonials").onSnapshot(q=>{S.testis=q.docs.map(d=>d.data()).filter(t=>t&&t.id);
+    if(S.route==="admin"&&S.authed){if(S.tab==="testimonials")keepTF(renderAdminBody)}else if(S.route==="home")render(true);if(S.lb)renderLB()},()=>{});
+  db.collection("projects").onSnapshot(q=>{S.projects=q.docs.map(d=>d.data()).filter(Boolean).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    if(S.route==="admin"&&S.authed){if(S.tab==="projects"||S.tab==="dashboard")keepProjForm(renderAdminBody)}else if(S.route==="home"||S.route==="projects"||S.route==="jobs")render(true);if(S.lb)renderLB()},()=>{});
+  try{S.uid=user?await user.id():null}catch(e){}
+  try{S.canEdit=user?!!(await user.canEdit()):false}catch(e){S.canEdit=false}
+  S.mode=S.canEdit?"live":"readonly";
+  db.doc("site/content").onSnapshot(s=>{if(s.exists)applyContent(s.data())},()=>{});
+  if(S.canEdit){db.collection("admins").onSnapshot(q=>{S.users=q.docs.map(d=>d.data()).filter(u=>u&&u.id);checkSession();
+    if(S.route==="admin"){if(!S.authed)render(true);else if(S.tab==="users")keepVals(USER_FORM_IDS,renderAdminBody)}},()=>{});
+    db.collection("inbox").onSnapshot(q=>{const out=[];q.docs.forEach(d=>{(d.data().messages||[]).forEach(m=>out.push({...m,uid:d.id,key:d.id+":"+m.id}))});
+    out.sort((a,b)=>b.at-a.at);S.messages=out;if(S.route==="admin"&&S.authed)renderAdminBody()},()=>{})}
+  if(S.route==="admin")render(true);
+}
+
+route();
+boot();
+</script>
+
+</body>
+</html>
