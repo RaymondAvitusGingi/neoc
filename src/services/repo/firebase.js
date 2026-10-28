@@ -295,3 +295,23 @@ export async function setMessageRead(key, read) {
 export async function deleteMessage(key) {
   await deleteDoc(doc(db, 'messages', key))
 }
+
+/* ---------------- Service images ----------------
+   One small document per service, keyed by the service's stable id —
+   kept out of the content document so a handful of photos never risk
+   pushing it over Firestore's 1MiB document limit. */
+
+export async function getServiceImages() {
+  const snap = await getDocs(collection(db, 'serviceImages'))
+  const images = {}
+  snap.docs.forEach((d) => { images[d.id] = d.data().dataUrl })
+  return images
+}
+
+export async function setServiceImage(serviceId, dataUrl) {
+  await setDoc(doc(db, 'serviceImages', serviceId), { dataUrl })
+}
+
+export async function deleteServiceImage(serviceId) {
+  await deleteDoc(doc(db, 'serviceImages', serviceId))
+}

@@ -3,6 +3,8 @@ import { onMounted } from 'vue'
 import { toast } from 'vue-sonner'
 import { useContentStore } from '@/stores/content'
 import { FIBERS, fiber } from '@/services/defaults'
+import { newId } from '@/services/hash'
+import { resizeImage } from '@/services/image'
 import SaveBar from '@/components/SaveBar.vue'
 
 const content = useContentStore()
@@ -17,6 +19,7 @@ function move(i, dir) {
 }
 function add() {
   content.draft.services.push({
+    id: newId('svc'),
     title: 'New service',
     fiber: content.draft.services.length % 12,
     summary: '',
@@ -25,9 +28,12 @@ function add() {
   })
   content.markDirty()
 }
-function remove(i) {
-  content.draft.services.splice(i, 1)
+async function remove(i) {
+  const [removed] = content.draft.services.splice(i, 1)
   content.markDirty()
+  if (removed?.id && content.serviceImages[removed.id]) {
+    await content.removeServiceImage(removed.id)
+  }
 }
 function setItemsText(service, text) {
   service.items = text.split('\n')
@@ -42,12 +48,30 @@ function toggleVisible(service) {
   service.isVisible = service.isVisible === false
   content.markDirty()
 }
+
+// Images save immediately (like project photos) rather than waiting on
+// "Save & publish" — see the note in stores/content.js.
+async function uploadImage(service, fileList) {
+  const file = fileList?.[0]
+  if (!file) return
+  try {
+    const { dataUrl } = await resizeImage(file, { maxDim: 1000, quality: 0.8 })
+    await content.setServiceImage(service.id, dataUrl)
+    toast.success('Photo saved.')
+  } catch {
+    toast.error(`Could not read ${file.name}.`)
+  }
+}
+async function removeImage(service) {
+  await content.removeServiceImage(service.id)
+  toast('Photo removed.')
+}
 </script>
 
 <template>
   <template v-if="content.draft">
     <div class="ed-list">
-      <div v-for="(s, i) in content.draft.services" :key="i" class="ed-row">
+      <div v-for="(s, i) in content.draft.services" :key="s.id || i" class="ed-row">
         <div class="ed-top">
           <span class="idx">
             <span class="fiber-dot" :style="{ background: fiber(s.fiber)[1], display: 'inline-block', verticalAlign: '-1px', marginRight: '6px' }"></span>
@@ -80,6 +104,20 @@ function toggleVisible(service) {
             <input type="checkbox" :checked="s.isVisible !== false" @change="toggleVisible(s)" />
             Show this service on the public website
           </label>
+          <div class="f full">
+            Photo
+            <span class="note" style="margin-bottom:8px">Shown on the home page instead of the default icon. Optional.</span>
+            <div v-if="content.serviceImages[s.id]" class="thumbs">
+              <div class="thumb">
+                <img :src="content.serviceImages[s.id]" alt="" />
+                <button type="button" aria-label="Remove photo" @click="removeImage(s)">✕</button>
+              </div>
+            </div>
+            <label v-else class="drop" :for="`svc-photo-${s.id}`">
+              <strong>Choose a photo</strong> or drop it here
+              <input :id="`svc-photo-${s.id}`" type="file" accept="image/jpeg,image/png,image/webp" hidden @change="uploadImage(s, $event.target.files)" />
+            </label>
+          </div>
         </div>
       </div>
     </div>

@@ -24,6 +24,7 @@ export const useContentStore = defineStore('content', {
     draft: null,
     dirty: false,
     loading: true,
+    serviceImages: {},
   }),
   getters: {
     isDraftOpen: (state) => state.draft !== null,
@@ -31,8 +32,23 @@ export const useContentStore = defineStore('content', {
   actions: {
     async load() {
       this.loading = true
-      this.content = await repo.getContent()
+      const [content, serviceImages] = await Promise.all([repo.getContent(), repo.getServiceImages()])
+      this.content = content
+      this.serviceImages = serviceImages
       this.loading = false
+    },
+    // Images live outside the draft/publish cycle (their own small Firestore
+    // docs, keyed by service id) so they save immediately, like project
+    // photos, rather than waiting on "Save & publish".
+    async setServiceImage(serviceId, dataUrl) {
+      await repo.setServiceImage(serviceId, dataUrl)
+      this.serviceImages = { ...this.serviceImages, [serviceId]: dataUrl }
+    },
+    async removeServiceImage(serviceId) {
+      await repo.deleteServiceImage(serviceId)
+      const next = { ...this.serviceImages }
+      delete next[serviceId]
+      this.serviceImages = next
     },
     beginDraft() {
       if (!this.draft) this.draft = deepClone(this.content)

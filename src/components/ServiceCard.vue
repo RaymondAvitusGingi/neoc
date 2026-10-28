@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { fiber } from '@/services/defaults'
 import { slugify } from '@/services/text'
+import { useContentStore } from '@/stores/content'
 
 const props = defineProps({
   service: { type: Object, required: true },
@@ -9,10 +10,12 @@ const props = defineProps({
   linkOnly: { type: Boolean, default: false },
 })
 
+const content = useContentStore()
 const color = computed(() => fiber(props.service.fiber)[1])
 const name = computed(() => fiber(props.service.fiber)[0])
 const tag = computed(() => `F${String(props.index + 1).padStart(2, '0')} · ${name.value}`)
 const anchor = computed(() => slugify(props.service.title))
+const image = computed(() => (props.service.id ? content.serviceImages[props.service.id] : null))
 </script>
 
 <template>
@@ -22,6 +25,7 @@ const anchor = computed(() => slugify(props.service.title))
     :id="linkOnly ? undefined : anchor"
     class="port"
   >
+    <img v-if="image" :src="image" :alt="service.title" loading="lazy" class="port-img" />
     <span class="port-tag"><span class="fiber-dot" :style="{ background: color }"></span>{{ tag }}</span>
     <h3>{{ service.title }}</h3>
     <p>{{ service.summary }}</p>

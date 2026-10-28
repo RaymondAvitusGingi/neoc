@@ -17,6 +17,7 @@ const k = {
   messages: 'messages',
   users: 'users',
   versions: 'versions',
+  serviceImages: 'serviceImages',
 }
 
 async function readSession() {
@@ -298,4 +299,26 @@ export async function setMessageRead(key, read) {
 export async function deleteMessage(key) {
   const list = (await get(k.messages, store)) || []
   await set(k.messages, list.filter((m) => m.key !== key), store)
+}
+
+/* ---------------- Service images ----------------
+   Kept separate from the content document (not part of the draft/publish
+   flow) so a handful of photos never risk pushing a Firestore document
+   over its 1MiB limit. Keyed by each service's stable id, so an image
+   survives the service being reordered. */
+
+export async function getServiceImages() {
+  return (await get(k.serviceImages, store)) || {}
+}
+
+export async function setServiceImage(serviceId, dataUrl) {
+  const images = (await get(k.serviceImages, store)) || {}
+  images[serviceId] = dataUrl
+  await set(k.serviceImages, images, store)
+}
+
+export async function deleteServiceImage(serviceId) {
+  const images = (await get(k.serviceImages, store)) || {}
+  delete images[serviceId]
+  await set(k.serviceImages, images, store)
 }

@@ -65,6 +65,7 @@ export const DEFAULT_CONTENT = {
   ],
   services: [
     {
+      id: 'svc-it-infrastructure',
       title: 'IT Infrastructure',
       fiber: 0,
       isVisible: true,
@@ -78,6 +79,7 @@ export const DEFAULT_CONTENT = {
       ],
     },
     {
+      id: 'svc-networking-telecommunications',
       title: 'Networking & Telecommunications',
       fiber: 1,
       isVisible: true,
@@ -93,6 +95,7 @@ export const DEFAULT_CONTENT = {
       ],
     },
     {
+      id: 'svc-data-centre-enterprise',
       title: 'Data Centre & Enterprise Solutions',
       fiber: 2,
       isVisible: true,
@@ -108,6 +111,7 @@ export const DEFAULT_CONTENT = {
       ],
     },
     {
+      id: 'svc-it-consultancy-support',
       title: 'IT Consultancy & Technical Support',
       fiber: 3,
       isVisible: true,
@@ -122,6 +126,7 @@ export const DEFAULT_CONTENT = {
       ],
     },
     {
+      id: 'svc-electrical-generators',
       title: 'Electrical Equipment & Generators',
       fiber: 4,
       isVisible: true,
@@ -135,6 +140,7 @@ export const DEFAULT_CONTENT = {
       ],
     },
     {
+      id: 'svc-cctv-electric-fence',
       title: 'CCTV & Electric Fence',
       fiber: 6,
       isVisible: true,
@@ -148,6 +154,7 @@ export const DEFAULT_CONTENT = {
       ],
     },
     {
+      id: 'svc-hardware-supply-procurement',
       title: 'Hardware Supply & Procurement',
       fiber: 8,
       isVisible: true,

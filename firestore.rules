@@ -62,6 +62,13 @@ service cloud.firestore {
       allow write: if isEditorPlus();
     }
 
+    // One doc per service, keyed by the service's stable id — kept out of
+    // the content document so photos never risk its 1MiB limit.
+    match /serviceImages/{serviceId} {
+      allow read: if true;
+      allow write: if isEditorPlus();
+    }
+
     // Public enquiry form writes here; only signed-in staff can read.
     match /messages/{messageId} {
       allow create: if request.resource.data.name is string
