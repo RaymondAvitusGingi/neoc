@@ -1,0 +1,85 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // The one email allowed to self-provision as the first Super Admin.
+    // After that account exists, every further invite goes through the
+    // Users admin module (isSuper() below), not this bootstrap path.
+    function isOwnerEmail() {
+      return request.auth.token.email == 'neocgr9@gmail.com';
+    }
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function myProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    function myRole() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? myProfile().role
+        : null;
+    }
+    function isActiveAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && myProfile().active == true;
+    }
+    function isSuper() {
+      return isActiveAdmin() && myRole() == 'superadmin';
+    }
+    function isEditorPlus() {
+      return isActiveAdmin() && (myRole() == 'superadmin' || myRole() == 'editor');
+    }
+
+    // Single document holding all editable site content (company, hero,
+    // about, services, markets, etc.) — public read, editor+ write.
+    match /content/{docId} {
+      allow read: if true;
+      allow write: if isEditorPlus();
+    }
+
+    // Snapshots kept for "restore a previous publish" — last 20, admin-only.
+    match /contentVersions/{versionId} {
+      allow read: if isActiveAdmin();
+      allow create: if isEditorPlus();
+      allow delete: if isSuper();
+      allow update: if false;
+    }
+
+    match /projects/{projectId} {
+      allow read: if true;
+      allow create, update, delete: if isEditorPlus();
+
+      // Photos live one-per-document so a multi-photo job never approaches
+      // Firestore's 1MiB document limit.
+      match /images/{imageId} {
+        allow read: if true;
+        allow create, update, delete: if isEditorPlus();
+      }
+    }
+
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow write: if isEditorPlus();
+    }
+
+    // Public enquiry form writes here; only signed-in staff can read.
+    match /messages/{messageId} {
+      allow create: if request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() < 200
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0 && request.resource.data.message.size() < 5000;
+      allow read, update: if isActiveAdmin();
+      allow delete: if isSuper();
+    }
+
+    // Doc id == Firebase Auth uid.
+    match /users/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isSuper());
+      allow list: if isSuper();
+      allow create: if isSuper()
+        || (isSignedIn() && request.auth.uid == userId && isOwnerEmail() && request.resource.data.role == 'superadmin');
+      allow update: if isSuper();
+      allow delete: if isSuper() && request.auth.uid != userId;
+    }
+  }
+}
