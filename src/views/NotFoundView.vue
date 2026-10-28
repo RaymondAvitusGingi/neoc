@@ -9,8 +9,8 @@
         The page you're looking for doesn't exist, or it may have moved. Try one of these instead.
       </p>
       <div class="state-actions">
-        <router-link class="btn btn-primary pressable" to="/">Back to Home</router-link>
-        <router-link class="btn btn-ghost pressable" to="/services">View services</router-link>
+        <router-link class="btn btn-primary btn-pill pressable" to="/">Back to Home</router-link>
+        <router-link class="btn btn-ghost btn-pill pressable" to="/services">View services</router-link>
       </div>
     </div>
   </section>

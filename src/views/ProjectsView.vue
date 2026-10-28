@@ -65,7 +65,7 @@ function close() {
 
       <div class="cta-band" style="margin-top:48px">
         <h2>Want results like these for your site?</h2>
-        <router-link class="btn btn-primary pressable" to="/contact">Request a quote</router-link>
+        <router-link class="btn btn-primary btn-pill pressable" to="/contact">Request a quote</router-link>
       </div>
     </div>
   </section>

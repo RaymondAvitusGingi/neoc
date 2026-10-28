@@ -19,7 +19,7 @@ const visibleServices = computed(() => content.content.services.filter((s) => s.
       </div>
       <div class="cta-band" style="margin-top:48px">
         <h2>Need a site survey or a quotation?</h2>
-        <router-link class="btn btn-primary pressable" to="/contact">Send a request</router-link>
+        <router-link class="btn btn-primary btn-pill pressable" to="/contact">Send a request</router-link>
       </div>
     </div>
   </section>

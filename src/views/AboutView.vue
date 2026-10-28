@@ -30,16 +30,16 @@ const certifications = computed(() => content.content.certifications || [])
         <div class="prose">
           <p v-for="(p, i) in aboutParas" :key="i">{{ p }}</p>
         </div>
-        <div style="display:flex;flex-direction:column;gap:28px">
-          <div class="statement">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div class="band" style="padding:28px 28px 26px;border-radius:var(--r)">
             <span class="eyebrow">Vision</span>
             <h3 style="margin-top:6px">Where we are going</h3>
-            <p>{{ content.content.vision }}</p>
+            <p style="color:var(--muted)">{{ content.content.vision }}</p>
           </div>
-          <div class="statement">
+          <div class="band" style="padding:28px 28px 26px;border-radius:var(--r);background:var(--accent-soft)">
             <span class="eyebrow">Mission</span>
             <h3 style="margin-top:6px">What we do every day</h3>
-            <p>{{ content.content.mission }}</p>
+            <p style="color:var(--muted)">{{ content.content.mission }}</p>
           </div>
         </div>
       </div>
@@ -54,6 +54,9 @@ const certifications = computed(() => content.content.certifications || [])
       </div>
       <div class="grid-3">
         <div v-for="(v, i) in content.content.values" :key="v.t" class="item">
+          <span class="icon-circle" :class="`c${(i % 3) + 1}`" style="width:46px;height:46px;margin-bottom:12px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+          </span>
           <span class="k">V{{ String(i + 1).padStart(2, '0') }}</span>
           <h3>{{ v.t }}</h3>
           <p>{{ v.d }}</p>
