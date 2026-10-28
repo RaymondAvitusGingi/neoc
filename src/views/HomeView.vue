@@ -14,6 +14,29 @@ const projects = useProjectsStore()
 const testimonials = useTestimonialsStore()
 const lightboxProject = ref(null)
 
+// Decorative mouse-tracking tilt on the hero's device card — fine-pointer
+// desktops only (touch "hover" would just stick the tilt in place), and
+// skipped entirely under prefers-reduced-motion.
+const deviceCardRef = ref(null)
+const canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function onTiltMove(e) {
+  if (!canTilt || !deviceCardRef.value) return
+  const rect = deviceCardRef.value.getBoundingClientRect()
+  const px = (e.clientX - rect.left) / rect.width - 0.5
+  const py = (e.clientY - rect.top) / rect.height - 0.5
+  deviceCardRef.value.style.setProperty('--tiltY', `${px * 10}deg`)
+  deviceCardRef.value.style.setProperty('--tiltX', `${py * -10}deg`)
+  deviceCardRef.value.style.setProperty('--tiltS', '1.02')
+}
+function onTiltLeave() {
+  if (!deviceCardRef.value) return
+  deviceCardRef.value.style.setProperty('--tiltY', '0deg')
+  deviceCardRef.value.style.setProperty('--tiltX', '0deg')
+  deviceCardRef.value.style.setProperty('--tiltS', '1')
+}
+
 onMounted(() => {
   projects.load()
   testimonials.load()
@@ -63,8 +86,8 @@ const statCards = computed(() => [
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>Always on the customer side</li>
         </ul>
       </div>
-      <div class="hero-light-art">
-        <div class="device-card">
+      <div class="hero-light-art" @mousemove="onTiltMove" @mouseleave="onTiltLeave">
+        <div class="device-card" ref="deviceCardRef">
           <FiberCanvas />
         </div>
         <div class="floating-card">

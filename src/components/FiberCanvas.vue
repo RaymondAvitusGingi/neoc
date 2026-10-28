@@ -10,16 +10,17 @@ let resizeObserver = null
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 function buildStrands(width, height) {
-  const count = 7
-  const picks = [0, 1, 2, 9, 11, 4, 6]
+  const count = 10
+  const picks = [0, 1, 2, 9, 11, 4, 6, 8, 10, 5]
   strands = Array.from({ length: count }, (_, i) => {
-    const y = height * (0.18 + (i / (count - 1)) * 0.64)
+    const y = height * (0.06 + (i / (count - 1)) * 0.88)
     return {
       y,
-      amp: 10 + Math.random() * 18,
-      freq: 0.004 + Math.random() * 0.003,
+      amp: 8 + Math.random() * 16,
+      freq: 0.004 + Math.random() * 0.004,
       speed: 0.4 + Math.random() * 0.5,
       phase: Math.random() * Math.PI * 2,
+      width: 1 + Math.random() * 0.8,
       color: FIBERS[picks[i % picks.length]][1],
       pulse: Math.random() * width,
     }
@@ -31,8 +32,8 @@ function draw(ctx, width, height, t) {
   for (const s of strands) {
     ctx.beginPath()
     ctx.strokeStyle = s.color
-    ctx.globalAlpha = 0.16
-    ctx.lineWidth = 1.4
+    ctx.globalAlpha = 0.17
+    ctx.lineWidth = s.width
     for (let x = 0; x <= width; x += 6) {
       const y = s.y + Math.sin(x * s.freq + s.phase + t * 0.0006 * s.speed) * s.amp
       x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
@@ -43,34 +44,35 @@ function draw(ctx, width, height, t) {
       s.pulse = (s.pulse + s.speed * 1.6) % (width + 120)
       const px = s.pulse - 60
       const py = s.y + Math.sin(px * s.freq + s.phase + t * 0.0006 * s.speed) * s.amp
-      const grad = ctx.createRadialGradient(px, py, 0, px, py, 26)
+      const grad = ctx.createRadialGradient(px, py, 0, px, py, 24)
       grad.addColorStop(0, s.color)
       grad.addColorStop(1, 'rgba(0,0,0,0)')
-      ctx.globalAlpha = 0.55
+      ctx.globalAlpha = 0.6
       ctx.fillStyle = grad
       ctx.beginPath()
-      ctx.arc(px, py, 26, 0, Math.PI * 2)
+      ctx.arc(px, py, 24, 0, Math.PI * 2)
       ctx.fill()
     }
   }
   ctx.globalAlpha = 1
 }
 
-function loop(ctx, canvas) {
+function loop(ctx, canvas, dpr) {
   const t = performance.now()
-  draw(ctx, canvas.width, canvas.height, t)
-  if (!reduceMotion) raf = requestAnimationFrame(() => loop(ctx, canvas))
+  draw(ctx, canvas.width / dpr, canvas.height / dpr, t)
+  if (!reduceMotion) raf = requestAnimationFrame(() => loop(ctx, canvas, dpr))
 }
+
+let lastDpr = 1
 
 function resize(canvas) {
   const rect = canvas.parentElement.getBoundingClientRect()
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  lastDpr = dpr
   canvas.width = rect.width * dpr
   canvas.height = rect.height * dpr
   const ctx = canvas.getContext('2d')
   ctx.scale(dpr, dpr)
-  canvas.width = rect.width
-  canvas.height = rect.height
   buildStrands(rect.width, rect.height)
 }
 
@@ -79,12 +81,12 @@ onMounted(() => {
   if (!canvas) return
   const ctx = canvas.getContext('2d')
   resize(canvas)
-  draw(ctx, canvas.width, canvas.height, 0)
-  if (!reduceMotion) raf = requestAnimationFrame(() => loop(ctx, canvas))
+  draw(ctx, canvas.width / lastDpr, canvas.height / lastDpr, 0)
+  if (!reduceMotion) raf = requestAnimationFrame(() => loop(ctx, canvas, lastDpr))
 
   resizeObserver = new ResizeObserver(() => {
     resize(canvas)
-    draw(ctx, canvas.width, canvas.height, performance.now())
+    draw(ctx, canvas.width / lastDpr, canvas.height / lastDpr, performance.now())
   })
   resizeObserver.observe(canvas.parentElement)
 })
