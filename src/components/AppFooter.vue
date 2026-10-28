@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useContentStore } from '@/stores/content'
 import { FIBERS } from '@/services/defaults'
 import { slugify } from '@/services/text'
+import BrandMark from './BrandMark.vue'
 
 const content = useContentStore()
 const c = computed(() => content.content.company)
@@ -17,7 +18,9 @@ const services = computed(() => content.content.services.filter((s) => s.isVisib
     </div>
     <div class="wrap foot-in">
       <div>
-        <router-link to="/" class="brand-name" style="text-decoration:none">NEOC</router-link>
+        <router-link to="/" style="text-decoration:none;display:inline-block">
+          <BrandMark style="font-size:22px" />
+        </router-link>
         <p style="margin-top:10px;max-width:38ch">{{ c.tagline }}</p>
         <p style="margin-top:10px" class="mono">{{ c.address }}<br />{{ c.postal }}</p>
       </div>

@@ -6,6 +6,23 @@
 
 .nav a.router-link-active { background: transparent; color: var(--accent); font-weight: 700; }
 
+/* Brand wordmark — the N is drawn as the fibre strand (ending in the same
+   signal dot used on every service tag), the O as the signal ring. Sized
+   entirely by font-size on whatever wraps it (em units throughout), and
+   themed through the existing --accent/--signal/--ink tokens so it follows
+   light/dark mode automatically — unlike the demo artifact, which fixed its
+   swatch colours on purpose to show the brand palette accurately regardless
+   of viewer theme. */
+.brand-lockup { display: inline-flex; flex-direction: column; }
+.brand-word { display: inline-flex; align-items: baseline; font-family: var(--f-display); font-weight: 900; font-stretch: 122%; letter-spacing: 0.01em; line-height: 1; color: var(--ink); }
+.bw-n { width: 0.82em; height: 0.76em; margin-right: 0.07em; overflow: visible; flex: none; }
+.bw-n .bw-glow { fill: var(--signal); opacity: 0.22; }
+.bw-n .bw-strand { fill: none; stroke: var(--accent); stroke-width: 19; stroke-linecap: round; stroke-linejoin: round; }
+.bw-n .bw-dot { fill: var(--signal); }
+.bw-o { width: 0.78em; height: 0.78em; margin-inline: 0.02em; overflow: visible; flex: none; }
+.bw-o .bw-ring { fill: none; stroke: var(--accent); stroke-width: 13; }
+.bw-o .bw-dot { fill: var(--signal); }
+
 .btn-pill { border-radius: var(--r-pill); }
 .btn-dark { background: var(--ink); color: var(--bg); }
 .btn-dark:active { transform: scale(0.98); }
