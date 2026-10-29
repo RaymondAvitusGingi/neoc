@@ -10,17 +10,17 @@ let resizeObserver = null
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 function buildStrands(width, height) {
-  const count = 10
-  const picks = [0, 1, 2, 9, 11, 4, 6, 8, 10, 5]
+  const count = 16
+  const picks = [0, 1, 2, 9, 11, 4, 6, 8, 10, 5, 3, 7, 0, 2, 9, 11]
   strands = Array.from({ length: count }, (_, i) => {
-    const y = height * (0.06 + (i / (count - 1)) * 0.88)
+    const y = height * (0.03 + (i / (count - 1)) * 0.94)
     return {
       y,
-      amp: 8 + Math.random() * 16,
+      amp: 10 + Math.random() * 20,
       freq: 0.004 + Math.random() * 0.004,
       speed: 0.4 + Math.random() * 0.5,
       phase: Math.random() * Math.PI * 2,
-      width: 1 + Math.random() * 0.8,
+      width: 1.3 + Math.random() * 1,
       color: FIBERS[picks[i % picks.length]][1],
       pulse: Math.random() * width,
     }
@@ -32,7 +32,7 @@ function draw(ctx, width, height, t) {
   for (const s of strands) {
     ctx.beginPath()
     ctx.strokeStyle = s.color
-    ctx.globalAlpha = 0.17
+    ctx.globalAlpha = 0.34
     ctx.lineWidth = s.width
     for (let x = 0; x <= width; x += 6) {
       const y = s.y + Math.sin(x * s.freq + s.phase + t * 0.0006 * s.speed) * s.amp
@@ -44,13 +44,13 @@ function draw(ctx, width, height, t) {
       s.pulse = (s.pulse + s.speed * 1.6) % (width + 120)
       const px = s.pulse - 60
       const py = s.y + Math.sin(px * s.freq + s.phase + t * 0.0006 * s.speed) * s.amp
-      const grad = ctx.createRadialGradient(px, py, 0, px, py, 24)
+      const grad = ctx.createRadialGradient(px, py, 0, px, py, 28)
       grad.addColorStop(0, s.color)
       grad.addColorStop(1, 'rgba(0,0,0,0)')
-      ctx.globalAlpha = 0.6
+      ctx.globalAlpha = 0.8
       ctx.fillStyle = grad
       ctx.beginPath()
-      ctx.arc(px, py, 24, 0, Math.PI * 2)
+      ctx.arc(px, py, 28, 0, Math.PI * 2)
       ctx.fill()
     }
   }
