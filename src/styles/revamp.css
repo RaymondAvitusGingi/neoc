@@ -99,17 +99,35 @@
 }
 
 /* Real, honest stat counters (no fabricated numbers) */
-.stat-counters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px; }
+.stat-counters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px; }
 .stat-counters .num { font-family: var(--f-display); font-weight: 800; font-stretch: 118%; font-size: clamp(30px, 4vw, 42px); color: var(--accent); line-height: 1; }
 .stat-counters .lbl { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
 
 /* Tinted full-width band (markets, CTA) */
 .band { background: var(--band); border-radius: var(--r); padding: clamp(32px, 5vw, 56px); }
 
-/* Numbered process badges (lighter than the old bordered grid) */
-.steps { border: 0; background: transparent; gap: 28px; }
-.step { padding: 0; border: 0 !important; }
+/* Numbered process badges */
+.steps { border: 0; background: transparent; gap: 24px; }
 .step .n { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 13px; margin-bottom: 12px; }
+
+/* Real cards (background, border, shadow, lift-on-hover) for sections that
+   used to be bare text — the icon-feature row, stat counters and process
+   steps. Same hover language as .port/.proj elsewhere on the site. */
+.icon-feature, .stat-card, .step, .item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(13, 27, 30, 0.05);
+  transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), border-color 150ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .icon-feature:hover, .stat-card:hover, .step:hover, .item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -16px rgba(13, 27, 30, 0.16);
+    border-color: var(--accent);
+  }
+}
 
 /* Speech-bubble testimonials */
 .testi { border-radius: var(--r); }

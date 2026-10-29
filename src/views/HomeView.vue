@@ -150,7 +150,7 @@ const statCards = computed(() => [
         <p>A new company, built to grow — these are our real, current numbers, not projections.</p>
       </div>
       <div class="stat-counters">
-        <div v-for="s in statCards" :key="s.lbl">
+        <div v-for="s in statCards" :key="s.lbl" class="stat-card">
           <div class="num">{{ s.num }}</div>
           <div class="lbl">{{ s.lbl }}</div>
         </div>
