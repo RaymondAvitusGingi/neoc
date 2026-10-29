@@ -16,7 +16,7 @@ const phone = computed(() => content.content.company.phone1)
   <header class="site-head">
     <div class="wrap head-row">
       <router-link class="brand" to="/" aria-label="NEOC Technology home">
-        <BrandMark subline style="font-size:21px" />
+        <BrandMark subline class="head-brand" />
       </router-link>
       <button class="menu-btn pressable" :aria-expanded="open" aria-controls="nav" @click="open = !open">Menu</button>
       <nav class="nav" :class="{ open }" id="nav">
@@ -32,7 +32,10 @@ const phone = computed(() => content.content.company.phone1)
         </svg>
         <span>{{ phone }}</span>
       </a>
-      <router-link class="btn btn-dark btn-pill pressable" to="/contact">Request a quote</router-link>
+      <router-link class="btn btn-dark btn-pill pressable head-cta" to="/contact">
+        <span class="cta-full">Request a quote</span>
+        <span class="cta-short">Quote</span>
+      </router-link>
     </div>
   </header>
 </template>
