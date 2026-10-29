@@ -113,7 +113,7 @@ function isLastSuper(u) {
 
   <h3 style="font-size:20px;margin:28px 0 14px">Admin users ({{ users.list.length }})</h3>
   <div v-if="users.list.length" class="ed-list">
-    <div v-for="u in users.list" :key="u.id" class="u-row" :class="{ off: !u.active }">
+    <div v-for="u in users.list" :key="u.id" v-reveal class="u-row" :class="{ off: !u.active }">
       <span class="avatar" aria-hidden="true">{{ initials(u.name) }}</span>
       <div class="u-main">
         <strong>{{ u.name }} <span v-if="u.id === auth.me?.id" class="pill">You</span></strong>

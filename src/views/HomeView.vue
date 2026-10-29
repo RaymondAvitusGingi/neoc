@@ -104,7 +104,7 @@ const statCards = computed(() => [
   <section class="block">
     <div class="wrap">
       <div class="icon-features">
-        <div v-for="(w, i) in featureItems" :key="w.t" class="icon-feature">
+        <div v-for="(w, i) in featureItems" :key="w.t" v-reveal class="icon-feature">
           <span class="icon-circle" :class="`c${i + 1}`">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path :d="featureIcons[i]" /></svg>
           </span>
@@ -122,7 +122,7 @@ const statCards = computed(() => [
         <p>{{ visibleServices.length }} service lines, each tagged with a fibre colour from the standard 12-fibre code — the same way our technicians label strands in a cable. <router-link to="/services">See all services →</router-link></p>
       </div>
       <div class="service-rows">
-        <ServiceRow v-for="(s, i) in featuredServices" :key="s.title" :service="s" :index="i" />
+        <ServiceRow v-for="(s, i) in featuredServices" :key="s.title" v-reveal :service="s" :index="i" />
       </div>
     </div>
   </section>
@@ -137,7 +137,7 @@ const statCards = computed(() => [
         </p>
       </div>
       <div v-if="recent.length" class="proj-grid">
-        <ProjectCard v-for="p in recent" :key="p.id" :project="p" @open="lightboxProject = p" />
+        <ProjectCard v-for="p in recent" :key="p.id" v-reveal :project="p" @open="lightboxProject = p" />
       </div>
       <div v-else class="empty">Our latest jobs will appear here soon.</div>
     </div>
@@ -150,7 +150,7 @@ const statCards = computed(() => [
         <p>A new company, built to grow — these are our real, current numbers, not projections.</p>
       </div>
       <div class="stat-counters">
-        <div v-for="s in statCards" :key="s.lbl" class="stat-card">
+        <div v-for="s in statCards" :key="s.lbl" v-reveal class="stat-card">
           <div class="num">{{ s.num }}</div>
           <div class="lbl">{{ s.lbl }}</div>
         </div>
@@ -165,7 +165,7 @@ const statCards = computed(() => [
         <p>Feedback from organisations we have worked with, shared with their permission.</p>
       </div>
       <div class="testi-grid">
-        <TestimonialCard v-for="t in shownTestimonials" :key="t.id" :testimonial="t" show-job-link @open-job="lightboxProject = $event" />
+        <TestimonialCard v-for="t in shownTestimonials" :key="t.id" v-reveal :testimonial="t" show-job-link @open-job="lightboxProject = $event" />
       </div>
     </div>
   </section>
@@ -177,7 +177,7 @@ const statCards = computed(() => [
         <p>Every project follows the same six stages, so you always know what has been done and what comes next.</p>
       </div>
       <div class="steps">
-        <div v-for="(a, i) in content.content.approach" :key="a.t" class="step">
+        <div v-for="(a, i) in content.content.approach" :key="a.t" v-reveal class="step">
           <span class="n">{{ i + 1 }}</span>
           <h3>{{ a.t }}</h3>
           <p>{{ a.d }}</p>

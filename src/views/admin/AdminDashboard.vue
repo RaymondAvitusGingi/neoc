@@ -22,10 +22,10 @@ const recentMessages = computed(() => messages.list.slice(0, 3))
 
 <template>
   <div class="stats">
-    <StatTile :value="content.content.services.length" label="Service lines" />
-    <StatTile :value="messages.list.length" label="Messages received" />
-    <StatTile :value="messages.unreadCount" label="Unread messages" color="var(--signal)" />
-    <StatTile :value="projects.list.length" label="Jobs posted" />
+    <StatTile v-reveal :value="content.content.services.length" label="Service lines" />
+    <StatTile v-reveal :value="messages.list.length" label="Messages received" />
+    <StatTile v-reveal :value="messages.unreadCount" label="Unread messages" color="var(--signal)" />
+    <StatTile v-reveal :value="projects.list.length" label="Jobs posted" />
   </div>
 
   <div class="card">

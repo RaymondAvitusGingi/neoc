@@ -107,7 +107,7 @@ async function remove(id) {
 
   <h3 style="font-size:20px;margin:28px 0 14px">Posted jobs ({{ projects.list.length }})</h3>
   <div v-if="projects.list.length" class="ed-list">
-    <div v-for="p in projects.list" :key="p.id" class="adm-proj">
+    <div v-for="p in projects.list" :key="p.id" v-reveal class="adm-proj">
       <div class="pi">
         <img v-if="p.images?.[0]" :src="p.images[0]" alt="" />
         <div v-else class="ph">No photo</div>

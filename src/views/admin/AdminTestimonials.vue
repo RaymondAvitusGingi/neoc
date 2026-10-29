@@ -75,7 +75,7 @@ async function remove(id) {
 
   <h3 style="font-size:20px;margin:28px 0 14px">Testimonials ({{ testimonials.list.length }})</h3>
   <div v-if="testimonials.list.length" class="ed-list">
-    <div v-for="t in testimonials.sorted" :key="t.id" class="t-row" :class="{ off: !t.visible }">
+    <div v-for="t in testimonials.sorted" :key="t.id" v-reveal class="t-row" :class="{ off: !t.visible }">
       <div style="min-width:0">
         <div class="t-q">"{{ t.quote }}"</div>
         <div class="proj-meta">

@@ -41,7 +41,7 @@ function exportCsv() {
   </div>
   <EmptyState v-if="!messages.list.length" text="No messages yet. When someone sends the form on the Contact page, it shows up here." />
   <div v-else class="ed-list">
-    <div v-for="m in messages.list" :key="m.key" class="msg" :class="{ unread: !m.read }">
+    <div v-for="m in messages.list" :key="m.key" v-reveal class="msg" :class="{ unread: !m.read }">
       <div class="msg-h">
         <strong>{{ m.name }}</strong>
         <span class="msg-meta">{{ m.org }}</span>

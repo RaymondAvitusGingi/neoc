@@ -53,7 +53,7 @@ const certifications = computed(() => content.content.certifications || [])
         <p>The standards our team holds itself to on every site and every ticket.</p>
       </div>
       <div class="grid-3">
-        <div v-for="(v, i) in content.content.values" :key="v.t" class="item">
+        <div v-for="(v, i) in content.content.values" :key="v.t" v-reveal class="item">
           <span class="icon-circle" :class="`c${(i % 3) + 1}`" style="width:46px;height:46px;margin-bottom:12px">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
           </span>

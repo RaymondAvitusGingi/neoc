@@ -71,7 +71,7 @@ async function removeImage(service) {
 <template>
   <template v-if="content.draft">
     <div class="ed-list">
-      <div v-for="(s, i) in content.draft.services" :key="s.id || i" class="ed-row">
+      <div v-for="(s, i) in content.draft.services" :key="s.id || i" v-reveal class="ed-row">
         <div class="ed-top">
           <span class="idx">
             <span class="fiber-dot" :style="{ background: fiber(s.fiber)[1], display: 'inline-block', verticalAlign: '-1px', marginRight: '6px' }"></span>

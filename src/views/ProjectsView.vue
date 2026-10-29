@@ -52,10 +52,9 @@ function close() {
         </div>
         <div class="proj-grid">
           <ProjectCard
-            v-for="(p, i) in projects.filtered"
+            v-for="p in projects.filtered"
             :key="p.id"
-            class="stagger-item"
-            :style="{ animationDelay: `${Math.min(i, 8) * 40}ms` }"
+            v-reveal
             :project="p"
             @open="open"
           />

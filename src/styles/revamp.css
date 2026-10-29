@@ -89,7 +89,7 @@
 .service-row:nth-child(even) .service-row-media { order: 2; }
 .service-row-media { aspect-ratio: 4 / 3; border-radius: var(--r); position: relative; overflow: hidden; display: grid; place-items: center; background: linear-gradient(135deg, color-mix(in srgb, var(--tile, var(--accent)) 16%, var(--surface)), color-mix(in srgb, var(--tile, var(--accent)) 4%, var(--surface))); }
 .service-row-media svg { width: 30%; height: 30%; color: var(--tile, var(--accent)); }
-.service-row-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.service-row-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 300ms var(--ease-out); }
 .service-row-body h3 { font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; margin-bottom: 12px; }
 .service-row-body > p { color: var(--muted); margin-bottom: 18px; max-width: 48ch; }
 .service-row-body .btn { margin-top: 22px; }
@@ -127,6 +127,40 @@
     box-shadow: 0 20px 40px -16px rgba(13, 27, 30, 0.16);
     border-color: var(--accent);
   }
+}
+
+/* Admin panel cards — subtle hover highlight (not a lift: these hold their
+   own buttons, so a big pop-up motion would fight the controls inside
+   them). Entrance handled per-view with v-reveal. */
+.stat, .ed-row, .msg, .adm-proj, .u-row, .t-row {
+  box-shadow: 0 1px 2px rgba(13, 27, 30, 0.04);
+  transition: border-color 150ms var(--ease-out), box-shadow 150ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .stat:hover, .ed-row:hover, .msg:hover, .adm-proj:hover, .u-row:hover, .t-row:hover {
+    border-color: var(--accent);
+    box-shadow: 0 10px 24px -14px rgba(13, 27, 30, 0.16);
+  }
+}
+
+/* A small welcome for the login card instead of appearing instantly */
+.login .card {
+  animation: login-in 420ms var(--ease-out) both;
+}
+@keyframes login-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* The remaining card-shaped elements that didn't have a hover response yet */
+.testi, .c-row, .service-row { transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), border-color 150ms var(--ease-out); }
+.testi { box-shadow: 0 1px 3px rgba(13, 27, 30, 0.05); }
+.service-row { border-radius: var(--r); padding-inline: 16px; }
+@media (hover: hover) and (pointer: fine) {
+  .testi:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -16px rgba(13, 27, 30, 0.16); border-color: var(--accent); }
+  .c-row:hover { border-color: var(--accent); box-shadow: 0 10px 24px -14px rgba(13, 27, 30, 0.14); }
+  .service-row:hover { background: var(--surface); box-shadow: 0 1px 0 var(--line); }
+  .service-row:hover .service-row-media img { transform: scale(1.04); }
 }
 
 /* Speech-bubble testimonials */

@@ -27,7 +27,7 @@ function move(i, dir) {
 
 <template>
   <div class="ed-list">
-    <div v-for="(item, i) in items" :key="i" class="ed-row">
+    <div v-for="(item, i) in items" :key="i" v-reveal class="ed-row">
       <div class="ed-top">
         <span class="idx">{{ label }} {{ i + 1 }}</span>
         <button class="icon-btn pressable" type="button" :disabled="disabled || i === 0" aria-label="Move up" @click="move(i, -1)">↑</button>
