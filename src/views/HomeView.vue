@@ -14,27 +14,27 @@ const projects = useProjectsStore()
 const testimonials = useTestimonialsStore()
 const lightboxProject = ref(null)
 
-// Decorative mouse-tracking tilt on the hero's device card — fine-pointer
-// desktops only (touch "hover" would just stick the tilt in place), and
-// skipped entirely under prefers-reduced-motion.
-const deviceCardRef = ref(null)
+// Decorative mouse-tracking tilt on the floating company-record card —
+// fine-pointer desktops only (touch "hover" would just stick the tilt in
+// place), and skipped entirely under prefers-reduced-motion.
+const floatingCardRef = ref(null)
 const canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches
   && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 function onTiltMove(e) {
-  if (!canTilt || !deviceCardRef.value) return
-  const rect = deviceCardRef.value.getBoundingClientRect()
+  if (!canTilt || !floatingCardRef.value) return
+  const rect = floatingCardRef.value.getBoundingClientRect()
   const px = (e.clientX - rect.left) / rect.width - 0.5
   const py = (e.clientY - rect.top) / rect.height - 0.5
-  deviceCardRef.value.style.setProperty('--tiltY', `${px * 10}deg`)
-  deviceCardRef.value.style.setProperty('--tiltX', `${py * -10}deg`)
-  deviceCardRef.value.style.setProperty('--tiltS', '1.02')
+  floatingCardRef.value.style.setProperty('--tiltY', `${px * 8}deg`)
+  floatingCardRef.value.style.setProperty('--tiltX', `${py * -8}deg`)
+  floatingCardRef.value.style.setProperty('--tiltS', '1.03')
 }
 function onTiltLeave() {
-  if (!deviceCardRef.value) return
-  deviceCardRef.value.style.setProperty('--tiltY', '0deg')
-  deviceCardRef.value.style.setProperty('--tiltX', '0deg')
-  deviceCardRef.value.style.setProperty('--tiltS', '1')
+  if (!floatingCardRef.value) return
+  floatingCardRef.value.style.setProperty('--tiltY', '0deg')
+  floatingCardRef.value.style.setProperty('--tiltX', '0deg')
+  floatingCardRef.value.style.setProperty('--tiltS', '1')
 }
 
 onMounted(() => {
@@ -66,6 +66,7 @@ const statCards = computed(() => [
 
 <template>
   <section class="hero-light">
+    <FiberCanvas class="hero-canvas-bg" />
     <div class="wrap hero-light-grid">
       <div class="hero-light-panel">
         <svg class="hero-doodle" viewBox="0 0 400 300" aria-hidden="true">
@@ -87,10 +88,7 @@ const statCards = computed(() => [
         </ul>
       </div>
       <div class="hero-light-art" @mousemove="onTiltMove" @mouseleave="onTiltLeave">
-        <div class="device-card" ref="deviceCardRef">
-          <FiberCanvas />
-        </div>
-        <div class="floating-card">
+        <div class="floating-card" ref="floatingCardRef">
           <h3>Company record</h3>
           <dl class="spec">
             <dt>Name</dt><dd>{{ c.name }}</dd>
