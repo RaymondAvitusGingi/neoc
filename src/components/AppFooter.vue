@@ -52,7 +52,7 @@ const services = computed(() => content.content.services.filter((s) => s.isVisib
     </div>
     <div class="wrap foot-bot">
       <span>© {{ year }} {{ c.name }}</span>
-      <span>Reg. No {{ c.reg }} · TIN {{ c.tin }}</span>
+      <span>{{ c.address }}</span>
     </div>
   </footer>
 </template>

@@ -89,11 +89,11 @@ const statCards = computed(() => [
       </div>
       <div class="hero-light-art" @mousemove="onTiltMove" @mouseleave="onTiltLeave">
         <div class="floating-card" ref="floatingCardRef">
-          <h3>Company record</h3>
+          <h3>At a glance</h3>
           <dl class="spec">
             <dt>Name</dt><dd>{{ c.name }}</dd>
-            <dt>Reg. No</dt><dd>{{ c.reg }}</dd>
-            <dt>TIN</dt><dd>{{ c.tin }}</dd>
+            <dt>Based in</dt><dd>{{ c.address }}</dd>
+            <dt>Phone</dt><dd>{{ c.phone1 }}</dd>
             <dt>Established</dt><dd>{{ c.established }}</dd>
           </dl>
         </div>

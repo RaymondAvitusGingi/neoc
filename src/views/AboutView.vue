@@ -6,11 +6,12 @@ import { paragraphs } from '@/services/text'
 const content = useContentStore()
 const c = computed(() => content.content.company)
 const aboutParas = computed(() => paragraphs(content.content.about))
+// Registration number and TIN are intentionally left off the public site —
+// they stay in the printed/PDF company profile for formal verification
+// (tenders, procurement) rather than sitting openly on a crawlable page.
 const rows = computed(() => [
   ['Company name', c.value.name],
   ['Country of registration', c.value.country],
-  ['Registration number', c.value.reg],
-  ['TIN', c.value.tin],
   ['Physical address', c.value.address],
   ['Postal address', c.value.postal],
   ['Telephone', `${c.value.phone1} & ${c.value.phone2}`],
